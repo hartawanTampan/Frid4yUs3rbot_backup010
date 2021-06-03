@@ -21,7 +21,7 @@ class Engine:
         all_files = self.get_all_files_in_path(self.path)
         for filepath in all_files:
             with open(filepath) as f:
-                data = yaml.load(f, Loader=yaml.FullLoader)
+                data = yaml.safe_load(f)
                 language_to_load = data.get("language")
                 logging.debug(f"Loading : {language_to_load}")
                 language_string[language_to_load] = data
