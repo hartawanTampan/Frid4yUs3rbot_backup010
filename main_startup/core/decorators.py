@@ -135,6 +135,7 @@ def listen(filter_s):
     """Simple Decorator To Handel Custom Filters"""
     def decorator(func):
         async def wrapper(client, message):
+            message.Engine = Engine
             try:
                 await func(client, message)
             except StopPropagation:
