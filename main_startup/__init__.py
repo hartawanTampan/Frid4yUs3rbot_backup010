@@ -19,9 +19,6 @@ from .config_var import Config
 start_time = time.time()
 friday_version = "V9.0"
 
-LangEngine = Engine()
-LangEngine.load_language()
-
 # Enable Logging For Pyrogram
 logging.basicConfig(
     level=logging.INFO,
@@ -100,3 +97,6 @@ if Config.BOT_TOKEN:
     )
 else:
     bot = None
+
+LangEngine = Engine()
+LangEngine.load_language()
