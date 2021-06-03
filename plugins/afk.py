@@ -47,17 +47,17 @@ async def set_afk(client, message):
     afk_start = start_1.replace(microsecond=0)
     log = LogIt(message)
     if msge:
-        msg = engine.get_string("AFK_1".format(reason=msge))
+        msg = engine.get_string("AFK_1").format(msge)
         await log.log_msg(
             client,
-            engine.get_string("AFK_2".format(reason=msge)),
+            engine.get_string("AFK_2").format(msge)
         )
         await go_afk(afk_start, msge)
     else:
         msg = engine.get_string("AFK_3")
         await log.log_msg(
             client,
-            engine.get_string("AFK_2".format(reason="Not Specified."))
+            engine.get_string("AFK_2").format("Not Specified.")
         )
         await go_afk(afk_start)
     await pablo.edit(msg)
@@ -97,13 +97,12 @@ async def afk_er(client, message):
     afk_start = lol["time"]
     afk_end = back_alivee.replace(microsecond=0)
     total_afk_time = str((afk_end - afk_start))
-    afk_since = "**a while ago**"
     message_to_reply = (
         f"I Am **[AFK]** Right Now. \n**Last Seen :** `{total_afk_time}`\n**Reason** : `{reason}`"
         if reason
         else f"I Am **[AFK]** Right Now. \n**Last Seen :** `{total_afk_time}`"
     )
-    LL = await message.reply(message_to_reply)
+    await message.reply(message_to_reply)
 
 
 @listen(filters.outgoing & filters.me & is_afk)
@@ -114,11 +113,11 @@ async def no_afke(client, message):
     afk_start = lol["time"]
     afk_end = back_alivee.replace(microsecond=0)
     total_afk_time = str((afk_end - afk_start))
-    kk = await message.reply(engine.get_string("AFK_4".format(afk_time=total_afk_time)))
+    kk = await message.reply(engine.get_string("AFK_4").format(total_afk_time))
     await kk.delete()
     await no_afk()
     log = LogIt(message)
     await log.log_msg(
         client,
-        engine.get_string("AFK_5".format(afk_time=total_afk_time)),
+        engine.get_string("AFK_5").format(total_afk_time)
     )
