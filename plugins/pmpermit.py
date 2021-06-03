@@ -42,7 +42,7 @@ from plugins import devs_id
 )
 async def set_custom_pm_texts(client, message):
     if not Config.PM_PSW:
-        await ms_.edit("`Pm Permit Is Disabled. Whats The Use Of Adding Custom Pm Text?`")
+        await message.edit("`Pm Permit Is Disabled. Whats The Use Of Adding Custom Pm Text?`")
         return
     ptext = get_text(message)
     if not ptext:
@@ -67,12 +67,10 @@ async def set_custom_pm_texts(client, message):
     ["setpmlimit"],
     cmd_help={
         "help": "Set Pm Limit!",
-        "example": "{ch}setpmlimit (number between 3-20)",
-    },
-)
-async def set_custom_pm_texts(client, message):
+        "example": "{ch}setpmlimit (number between 3-20)"})
+async def set_custom_pm_limit(client, message):
     if not Config.PM_PSW:
-        await ms_.edit("`Pm Permit Is Disabled. Whats The Use Of Setting Pm Limit?`")
+        await message.edit("`Pm Permit Is Disabled. Whats The Use Of Setting Pm Limit?`")
         return
     ptext = get_text(message)
     if not ptext:
@@ -164,7 +162,7 @@ async def unmblock(client, message):
 )
 async def allow(client, message):
     if not Config.PM_PSW:
-        await ms_.edit("`Pm Permit Is Disabled. Whats The Use Of Approving User?`")
+        await message.edit("`Pm Permit Is Disabled. Whats The Use Of Approving User?`")
         return
     if message.chat.type == "private":
         if int(message.chat.id) in OLD_MSG:
@@ -216,7 +214,7 @@ async def allow(client, message):
 )
 async def disallow(client, message):
     if not Config.PM_PSW:
-        await ms_.edit("`Pm Permit Is Disabled. Whats The Use Of Dis-Approving Users?`")
+        await message.edit("`Pm Permit Is Disabled. Whats The Use Of Dis-Approving Users?`")
         return
     if message.chat.type == "private":
         user_ = await client.get_users(int(message.chat.id))
@@ -271,7 +269,7 @@ async def disallow(client, message):
 async def set_my_pic(client, message):
     ms_ = await edit_or_reply(message, "`Please Wait!`")
     if not Config.PM_PSW:
-        await ms_.edit("`Pm Permit Is Disabled. Whats The Use Of Adding A Pm Pic?`")
+        await message.edit("`Pm Permit Is Disabled. Whats The Use Of Adding A Pm Pic?`")
         return
     if not await is_media(message.reply_to_message):
         await ms_.edit("`Reply To Media To Set As Your Pm Permit Media.`")

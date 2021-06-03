@@ -9,7 +9,7 @@
 import logging
 import os
 import time
-
+from bot_utils_files.Localization.engine import Engine
 import motor.motor_asyncio
 from pyrogram import Client
 
@@ -18,6 +18,9 @@ from .config_var import Config
 # Note StartUp Time - To Capture Uptime.
 start_time = time.time()
 friday_version = "V9.0"
+
+LangEngine = Engine()
+LangEngine.load_language()
 
 # Enable Logging For Pyrogram
 logging.basicConfig(

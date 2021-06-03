@@ -30,13 +30,13 @@ from main_startup import (
     Friday2,
     Friday3,
     Friday4,
-    bot
+    bot,
+    LangEngine
 )
 from main_startup.config_var import Config
 from main_startup.helper_func.basic_helpers import is_admin_or_owner
-
-from .helpers import edit_or_reply
-
+from bot_utils_files.Localization.engine import Engine
+from main_startup.core.helpers import edit_or_reply
 
 def friday_on_cmd(
     cmd: list,
@@ -58,6 +58,7 @@ def friday_on_cmd(
         & ~filters.via_bot
         & ~filters.forwarded
     )
+    Engine = LangEngine
     add_help_menu(
         cmd=cmd[0],
         stack=inspect.stack(),
@@ -68,6 +69,7 @@ def friday_on_cmd(
 
     def decorator(func):
         async def wrapper(client, message):
+            message.Engine = Engine
             message.client = client
             chat_type = message.chat.type
             if only_if_admin and not await is_admin_or_owner(
@@ -105,7 +107,7 @@ def friday_on_cmd(
                     pass
                 except ContinuePropagation:
                     raise ContinuePropagation
-                except BaseException as e:
+                except BaseException:
                     logging.error(
                         f"Exception - {func.__module__} - {func.__name__}"
                     )
@@ -143,7 +145,7 @@ def listen(filter_s):
                 pass
             except MessageEmpty:
                 pass
-            except BaseException as e:
+            except BaseException:
                 logging.error(f"Exception - {func.__module__} - {func.__name__}")
                 TZ = pytz.timezone(Config.TZ)
                 datetime_tz = datetime.now(TZ)

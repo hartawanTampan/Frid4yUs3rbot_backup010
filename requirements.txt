@@ -6,6 +6,7 @@ faker>=6.6.2
 html5lib
 langdetect>=1.0.8
 geopy>=2.1.0
+PyYAML>=5.4.1
 selenium>=3.141.0
 opencv-contrib-python>=4.5.1.48
 fake_useragent>=0.1.11
