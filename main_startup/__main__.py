@@ -77,10 +77,6 @@ async def fetch_plugins_from_channel():
 async def run_bot():
     """Run The Bot"""
     await mongo_check()
-    try:
-        await update_it()
-    except:
-        pass
     if bot:
         await bot.start()
         bot.me = await bot.get_me()
