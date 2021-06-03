@@ -20,15 +20,13 @@ class Engine:
     def load_language(self):
         all_files = self.get_all_files_in_path(self.path)
         for filepath in all_files:
-            print(filepath)
-            data = yaml.load(str(filepath), Loader=yaml.FullLoader)
-            language_to_load = data.get("language")
-            logging.debug(f"Loading : {language_to_load}")
-            language_string[language_to_load] = data
+            with open(filepath) as f:
+                data = yaml.load(f, Loader=yaml.FullLoader)
+                language_to_load = data.get("language")
+                logging.debug(f"Loading : {language_to_load}")
+                language_string[language_to_load] = data
         logging.debug("All language Loaded.")
         
     def get_string(self, string):
         string_ = language_string.get(self.language).get(string) or "**404_STRING_NOT_FOUND :** `String Not Found - Please Report It To @FridayChat`"
         return string_
-        
-    
