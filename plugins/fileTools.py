@@ -170,7 +170,7 @@ async def chnnlpdf(client, message):
     },
 )
 async def Download(client, message):
-    s_time time.time()
+    s_time = time.time()
     engine = message.Engine
     pablo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     if not message.reply_to_message:
