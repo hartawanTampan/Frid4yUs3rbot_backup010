@@ -20,7 +20,6 @@ xtra_pip_installer () {
 }
 
 fetch_xtra_plugins () {
-  make_xtra_dir
   git_clone_plugin_repo
   xtra_pip_installer
 }
