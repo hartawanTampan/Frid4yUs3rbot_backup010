@@ -11,16 +11,6 @@ BRANCH="$2"
 xtra_fold="./xtraplugins"
 req_file="./xtraplugins/req.txt"
 
-make_xtra_dir () {
-  if [[ -d "$xtra_fold" ]] 
-  then
-    rm -r "$xtra_fold"
-    mkdir "$xtra_fold"
-  else
-    mkdir "$xtra_fold"
-  fi
-}
-
 git_clone_plugin_repo () {
   git clone "$PLUGIN_REPO" -b "$BRANCH" "$xtra_fold"
 }
