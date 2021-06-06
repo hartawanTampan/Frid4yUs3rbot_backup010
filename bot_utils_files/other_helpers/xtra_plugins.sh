@@ -6,13 +6,13 @@
 #
 # All rights reserved.
 
-PLUGIN_REPO="https://github.com/DevsExpo/Xtra-Plugins"
-BRANCH="unstable"
+PLUGIN_REPO="$1"
+BRANCH="$2"
 xtra_fold="./xtraplugins"
 req_file="./xtraplugins/req.txt"
 
 make_xtra_dir () {
-  if [[ -d "$xtra_fold" ]] 
+  if [ -d "$xtra_fold" ] 
   then
     rm -r "$xtra_fold"
     mkdir "$xtra_fold"
