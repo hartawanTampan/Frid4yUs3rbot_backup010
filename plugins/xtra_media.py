@@ -20,7 +20,7 @@ from PIL import Image
 from pyrogram.types import InputMediaPhoto
 
 from main_startup.core.decorators import friday_on_cmd
-from main_startup.helper_func.basic_helpers import edit_or_reply, get_text, runcmd
+from main_startup.helper_func.basic_helpers import edit_or_reply, get_text, runcmd, run_in_exc
 from main_startup.helper_func.gmdl import googleimagesdownload
 
 opener = urllib.request.build_opener()
@@ -40,6 +40,7 @@ if not os.path.isdir(sedpath):
     },
 )
 async def lgo(client, message):
+    engine = message.Engine
     pablo = await edit_or_reply(message, "`Processing...`")
     if not message.reply_to_message:
         await pablo.edit("Reply to A Animated Sticker...")
@@ -74,7 +75,40 @@ async def lgo(client, message):
     os.remove(lol)
     os.remove("tgs.tgs")
     await pablo.delete()
+    
+@run_in_exc    
+def download_imgs_from_google(query: str, lim: int):
+    response = googleimagesdownload()
+    arguments = {
+        "keywords": query,
+        "silent_mode": True,
+        "limit": lim,
+        "format": "jpg",
+        "no_directory": "no_directory",
+    }
+    paths = response.download(arguments)
+    return paths[0][guess]
 
+@run_in_exc
+def get_img_search_result(imoge: str):
+    try:
+        image = Image.open(imoge)
+    except OSError:
+        return None
+    name = "okgoogle.png"
+    image.save(name, "PNG")
+    image.close()
+    if os.path.exists(imoge):
+        os.remove(imoge)
+    searchUrl = "https://www.google.com/searchbyimage/upload"
+    multipart = {"encoded_image": (name, open(name, "rb")), "image_content": ""}
+    response = requests.post(searchUrl, files=multipart, allow_redirects=False)
+    if os.path.exists(name):
+        os.remove(name)
+    if response.status_code == 400:
+        return None
+    fetchUrl = response.headers["Location"]
+    return fetchUrl
 
 @friday_on_cmd(
     ["reverse"],
@@ -84,78 +118,43 @@ async def lgo(client, message):
     },
 )
 async def reverseing(client, message):
-    pablo = await edit_or_reply(message, "`Searching For The Image.....`")
+    engine = message.Engine
+    input_ = get_text(message)
+    pablo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     if not message.reply_to_message or not message.reply_to_message.photo:
-        await pablo.edit("Reply to A image...")
+        await pablo.edit(engine.get_string("NEEDS_REPLY"))
         return
     imoge = await message.reply_to_message.download()
-    try:
-        image = Image.open(imoge)
-    except OSError:
-        return
-    name = "okgoogle.png"
-    image.save(name, "PNG")
-    image.close()
-    searchUrl = "https://www.google.com/searchbyimage/upload"
-    multipart = {"encoded_image": (name, open(name, "rb")), "image_content": ""}
-    response = requests.post(searchUrl, files=multipart, allow_redirects=False)
-    fetchUrl = response.headers["Location"]
-    if response != 400:
-        await pablo.edit(
-            "`Image successfully uploaded to Google. Maybe.`"
-            "\n`Parsing source now. Maybe.`"
-        )
-    else:
-        await pablo.edit("`Google told me to fuck off.`")
-        return
-
-    os.remove(name)
+    fetchUrl = await get_img_search_result(imoge)
+    if not fetchUrl:
+        return await pablo.edit(engine.get_string("IMG_NOT_FOUND").format("google"))
     match = await ParseSauce(fetchUrl + "&preferences?hl=en&fg=1#languages")
     guess = match["best_guess"]
     imgspage = match["similar_images"]
-
     if guess and imgspage:
-        await pablo.edit(f"[{guess}]({fetchUrl})\n\n`Looking for this Image...`")
+        await pablo.edit(engine.get_string("LOOKING_FOR_IMG").format(guess, fetchUrl))
     else:
-        await pablo.edit("`Can't find this piece of shit.`")
+        await pablo.edit(engine.get_string("IMG_NOT_FOUND").format("google"))
         return
-    lim = findall(r"lim=\d+", guess)
-    try:
-        lim = lim[0]
-        lim = lim.replace("lim=", "")
-        guess = guess.replace("lim=" + lim[0], "")
-    except IndexError:
-        lim = 5
-    response = googleimagesdownload()
-
-    arguments = {
-        "keywords": guess,
-        "silent_mode": True,
-        "limit": lim,
-        "format": "jpg",
-        "no_directory": "no_directory",
-    }
-    paths = response.download(arguments)
-    lst = paths[0][guess]
     await pablo.edit(f"[{guess}]({fetchUrl})\n\n[Visually similar images]({imgspage})")
-    Beast = []
-    for x in lst:
-        try:
-            Beast.append(InputMediaPhoto(f"{x}"))
-        except:
-            pass
-    await client.send_media_group(message.chat.id, media=Beast)
-    shutil.rmtree(os.path.dirname(os.path.abspath(lst[0])))
-
-
-async def ParseSauce(googleurl):
+    if input_:
+        lim = 5
+        lst = await download_imgs_from_google(quess, lim)
+        Beast = []
+        for x in lst:
+            try:
+                Beast.append(InputMediaPhoto(f"{x}"))
+            except:
+                pass
+        await client.send_media_group(message.chat.id, media=Beast)
+        shutil.rmtree(os.path.dirname(os.path.abspath(lst[0])))
+    
+@run_in_exc
+def ParseSauce(googleurl):
     """Parse/Scrape the HTML code for the info we want."""
-
     source = opener.open(googleurl).read()
     soup = BeautifulSoup(source, "html.parser")
-
     results = {"similar_images": "", "best_guess": ""}
-
     try:
         for similar_image in soup.findAll("input", {"class": "gLFyf"}):
             url = "https://www.google.com/search?tbm=isch&q=" + urllib.parse.quote_plus(
@@ -164,10 +163,8 @@ async def ParseSauce(googleurl):
             results["similar_images"] = url
     except BaseException:
         pass
-
     for best_guess in soup.findAll("div", attrs={"class": "r5a77d"}):
         results["best_guess"] = best_guess.get_text()
-
     return results
 
 
@@ -179,6 +176,7 @@ async def ParseSauce(googleurl):
     },
 )
 async def yandex_(client, message):
+    engine = message.Engine
     pablo = await edit_or_reply(
         message, "`hmm... Reverse Searching The Image On Yandex...🚶`"
     )
@@ -220,6 +218,7 @@ Get Your Own Friday From @FRIDAYCHAT.</b></u>
     },
 )
 async def img_search(client, message):
+    engine = message.Engine
     pablo = await edit_or_reply(message, "`Processing...`")
     query = get_text(message)
     if not query:
@@ -229,16 +228,7 @@ async def img_search(client, message):
         lim = query.split("|")[1] if (query.split("|")[1]).isdigit() else 5
     else:
         lim = 5
-    response = googleimagesdownload()
-    arguments = {
-        "keywords": query,
-        "limit": lim,
-        "format": "jpg",
-        "silent_mode": True,
-        "no_directory": "no_directory",
-    }
-    paths = response.download(arguments)
-    lst = paths[0][query]
+    lst = await download_imgs_from_google(query, lim)
     Beast = []
     for x in lst:
         try:
@@ -258,6 +248,7 @@ async def img_search(client, message):
     },
 )
 async def wow_nice(client, message):
+    engine = message.Engine
     msg_ = await edit_or_reply(message, "`Please Wait!`")
     random_s = random.randint(0, 63)
     te_t = get_text(message)
