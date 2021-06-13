@@ -241,7 +241,7 @@ async def ban_world(client, message):
     if not reason:
         reason = "Not Specified!"
     if userz == me_m.id:
-        await bun.edit(engine.get_string("TF_DO_IT").format("Leave This Chat"))
+        await bun.edit(engine.get_string("TF_DO_IT").format("Ban"))
         return
     try:
         user_ = await client.get_users(userz)
@@ -270,34 +270,34 @@ async def ban_world(client, message):
 )
 async def unban_world(client, message):
     engine = message.Engine
-    unbun = await edit_or_reply(message, "`Trying To Un-Ban User!`")
+    unbun = await edit_or_reply(message, engine.get_string("PROCESSING"))
     me_m = client.me
     me_ = await message.chat.get_member(int(me_m.id))
     if not me_.can_restrict_members:
-        await unbun.edit("`Boss, You Don't Have Un-Ban Permission!`")
+        await unbun.edit(engine.get_string("NOT_ADMIN"))
         return
     text_ = get_text(message)
     userm, reason = get_user(message, text_)
     if not userm:
         await unbun.edit(
-            "`Bruh, Please Reply To User / Give Me Username of ID To UnBan!`"
+            engine.get_string("TO_DO").format("Un-Ban")
         )
         return
     try:
         user_ = await client.get_users(userm)
     except:
-        await unbun.edit(f"`404 : User Doesn't Exists In This Chat !`")
+        await unbun.edit(engine.get_string("USER_MISSING").format("User Doesn't Exists In This Chat !"))
         return
     userz = user_.id
     if not reason:
         reason = "Not Specified!"
     if userz == me_m.id:
-        await unbun.edit("`🙄 Nice Idea, Lets Un-Ban Myself!`")
+        await unbun.edit(engine.get_string("TF_DO_IT").format("Un-Ban"))
         return
     try:
         await client.unban_chat_member(message.chat.id, int(user_.id))
     except BaseException as e:
-        await unbun.edit(f"`I Un-Able To Un-Ban That User` \n**Error :** `{e}`")
+        await unbun.edit(engine.get_string("FAILED_ADMIN_ACTION").format("Un-Ban", e))
     ub = f"**#UnBanned** \n**User :** [{user_.first_name}](tg://user?id={user_.id}) \n**Chat :** `{message.chat.title}` \n**Reason :** `{reason}`"
     await unbun.edit(ub)
     log = LogIt(message)
