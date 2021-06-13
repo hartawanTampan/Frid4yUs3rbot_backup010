@@ -33,7 +33,7 @@ async def eval(client, message):
     stark = await edit_or_reply(message, engine.get_string("PROCESSING"))
     cmd = get_text(message)
     if not cmd:
-        await stark.edit(engine.get_string("INPUT_REQ").format("Chat ID"))
+        await stark.edit(engine.get_string("INPUT_REQ").format("Python Code"))
         return
     if message.reply_to_message:
         message.reply_to_message.message_id
@@ -87,7 +87,7 @@ async def any_lang_cmd_runner(client, message):
     engine = message.Engine
     stark = await edit_or_reply(message, engine.get_string("PROCESSING"))
     if len(message.text.split()) == 1:
-        await stark.edit(engine.get_string("INPUT_REQ").format("Chat ID"))
+        await stark.edit(engine.get_string("INPUT_REQ").format("Language Code"))
         return
     if not message.reply_to_message:
         await stark.edit(engine.get_string("NEEDS_REPLY").format("Code"))
@@ -125,7 +125,7 @@ async def sed_terminal(client, message):
     stark = await edit_or_reply(message, engine.get_string("WAIT"))
     cmd = get_text(message)
     if not cmd:
-        await stark.edit(engine.get_string("INPUT_REQ").format("Chat ID"))
+        await stark.edit(engine.get_string("INPUT_REQ").format("Bash Code"))
         return
     cmd = message.text.split(None, 1)[1]
     if message.reply_to_message:
