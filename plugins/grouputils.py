@@ -221,37 +221,37 @@ async def ujwalzombie(client, message):
 )
 async def ban_world(client, message):
     engine = message.Engine
-    bun = await edit_or_reply(message, "`Trying To Ban User!`")
+    bun = await edit_or_reply(message, engine.get_string("PROCESSING"))
     me_m = client.me
     me_ = await message.chat.get_member(int(me_m.id))
     if not me_.can_restrict_members:
-        await bun.edit("`Boss, You Don't Have Ban Permission!`")
+        await bun.edit(engine.get_string("NOT_ADMIN"))
         return
     text_ = get_text(message)
     userk, reason = get_user(message, text_)
     if not userk:
-        await bun.edit("`Bruh, Please Reply To User / Give Me Username of ID To Ban!`")
+        await bun.edit(engine.get_string("TO_DO").format("Ban"))
         return
     try:
         user_ = await client.get_users(userk)
     except:
-        await bun.edit(f"`404 : User Doesn't Exists In This Chat !`")
+        await bun.edit(engine.get_string("USER_MISSING").format("User Doesn't Exists In This Chat !"))
         return
     userz = user_.id
     if not reason:
         reason = "Not Specified!"
     if userz == me_m.id:
-        await bun.edit("`🙄 Nice Idea, Lets Leave This Chat!`")
+        await bun.edit(engine.get_string("TF_DO_IT").format("Leave This Chat"))
         return
     try:
         user_ = await client.get_users(userz)
     except:
-        await bun.edit(f"`404 : User Doesn't Exists In This Chat !`")
+        await bun.edit(engine.get_string("USER_MISSING").format("User Doesn't Exists In This Chat !"))
         return
     try:
         await client.kick_chat_member(message.chat.id, int(user_.id))
     except BaseException as e:
-        await bun.edit(f"`I Am Un-able To Ban That User` \n**Error :** `{e}`")
+        await bun.edit(engine.get_string("FAILED_ADMIN_ACTION").format("Ban", e))
         return
     b = f"**#Banned** \n**User :** [{user_.first_name}](tg://user?id={user_.id}) \n**Chat :** `{message.chat.title}` \n**Reason :** `{reason}`"
     await bun.edit(b)
