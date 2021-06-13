@@ -108,33 +108,9 @@ async def any_lang_cmd_runner(client, message):
     }
     r = requests.post("https://starkapis.herokuapp.com/compiler", data=data).json()
     if r.get("reason") != None:
-        iujwal = f"""**▶ Code :** \n`{reply_code}` 
-**▶ Result :** 
-`{r.get("results")}`
-**▶ Error :** 
-`{r.get("errors")}`
-**▶ Stats :**
- `{r.get("stats")}`
-**▶ Success :** 
- `{r.get("success")}`
-**▶ Warnings :** 
- `{r.get("warnings")}`
-**▶ Reason :**
- `{r.get("reason")}`
- """
+        iujwal = engine.get_string("RC_OUTPUT_R").format(reply_code, r.get("results"), r.get("errors"), r.get("stats"), r.get("success"), r.get("warnings"), r.get("reason") )
     else:
-        iujwal = f"""**▶ Code :** \n`{reply_code}` 
-**▶ Result :** 
-`{r.get("results")}`
-**▶ Error :** 
-`{r.get("errors")}`
-**▶ Stats :**
- `{r.get("stats")}`
-**▶ Success :** 
- `{r.get("success")}`
-**▶ Warnings :** 
- `{r.get("warnings")}`
- """
+        engine.get_string("RC_OUTPUT").format(reply_code, r.get("results"), r.get("errors"), r.get("stats"), r.get("success"), r.get("warnings") )
     await edit_or_send_as_file(
         iujwal, stark, client, "`Result of Your Code!`", "rc-result"
     )
