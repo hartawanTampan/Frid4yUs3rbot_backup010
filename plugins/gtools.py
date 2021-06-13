@@ -33,21 +33,21 @@ from plugins import devs_id
 )
 async def gmute_him(client, message):
     engine = message.Engine
-    g = await edit_or_reply(message, "`Processing..`")
+    g = await edit_or_reply(message, engine.get_string("PROCESSING"))
     text_ = get_text(message)
     user, reason = get_user(message, text_)
     if not user:
-        await g.edit("`Reply To User Or Mention To Gmute Him`")
+        await g.edit(engine.get_string("REPLY_TO_USER").format("gmute"))
         return
     try:
         userz = await client.get_users(user)
     except:
-        await g.edit(f"`404 : User Doesn't Exists In This Chat !`")
+        await g.edit(engine.get_string("USER_MISSING").format("User Doesn't Exists In This Chat !"))
         return
     if not reason:
         reason = "Just_Gmutted!"
     if userz.id == (client.me).id:
-        await g.edit("`Oh, This is So Funny Btw :/`")
+        await g.edit(engine.get_string("TF_DO_IT").format("Gmute"))
         return
     if userz.id in devs_id:
         await g.edit("`Sadly, I Can't Do That!`")
@@ -74,19 +74,19 @@ async def gmute_him(client, message):
 )
 async def gmute_him(client, message):
     engine = message.Engine
-    ug = await edit_or_reply(message, "`Processing..`")
+    ug = await edit_or_reply(message, engine.get_string("PROCESSING"))
     text_ = get_text(message)
     user_ = get_user(message, text_)[0]
     if not user_:
-        await ug.edit("`Reply To User Or Mention To Un-Gmute Him`")
+        await ug.edit(engine.get_string("REPLY_TO_USER").format("UN-gmute"))
         return
     try:
         userz = await client.get_users(user_)
     except:
-        await ug.edit(f"`404 : User Doesn't Exists In This Chat !`")
+        await ug.edit(engine.get_string("USER_MISSING").format("User Doesn't Exists In This Chat !")))
         return
     if userz.id == (client.me).id:
-        await ug.edit("`Oh, This is So Funny Btw :/`")
+        await ug.edit(engine.get_string("TF_DO_IT").format("UN-gmute"))
         return
     if userz.id in Config.AFS:
         await ug.edit("`Sudo Users Can't Be Un-Gmutted! Remove Him And Try Again!`")
@@ -110,22 +110,22 @@ async def gmute_him(client, message):
 )
 async def gbun_him(client, message):
     engine = message.Engine
-    gbun = await edit_or_reply(message, "`Processing..`")
+    gbun = await edit_or_reply(message, engine.get_string("PROCESSING"))
     text_ = get_text(message)
     user, reason = get_user(message, text_)
     failed = 0
     if not user:
-        await gbun.edit("`Reply To User Or Mention To GBan Him`")
+        await gbun.edit(engine.get_string("REPLY_TO_USER").format("gban"))
         return
     try:
         userz = await client.get_users(user)
     except:
-        await gbun.edit(f"`404 : User Doesn't Exists In This Chat !`")
+        await gbun.edit(engine.get_string("USER_MISSING").format("User Doesn't Exists In This Chat !")))
         return
     if not reason:
         reason = "Private Reason!"
     if userz.id == (client.me).id:
-        await gbun.edit("`Oh, This is So Funny Btw :/`")
+        await gbun.edit(engine.get_string("TF_DO_IT").format("GBan"))
         return
     if userz.id in devs_id:
         await g.edit("`Sadly, I Can't Do That!`")
@@ -142,7 +142,7 @@ async def gbun_him(client, message):
     if not chat_dict:
         gbun.edit("`You Have No Chats! So Sad`")
         return
-    await gbun.edit("`Starting GBans Now!`")
+    await gbun.edit(engine.get_string("GBAN_START"))
     for ujwal in chat_dict:
         try:
             await client.kick_chat_member(ujwal, int(userz.id))
@@ -164,20 +164,20 @@ async def gbun_him(client, message):
 )
 async def ungbun_him(client, message):
     engine = message.Engine
-    ungbun = await edit_or_reply(message, "`Processing..`")
+    ungbun = await edit_or_reply(message, engine.get_string("PROCESSING"))
     text_ = get_text(message)
     user = get_user(message, text_)[0]
     failed = 0
     if not user:
-        await ungbun.edit("`Reply To User Or Mention To Un-GBan Him`")
+        await ungbun.edit(engine.get_string("REPLY_TO_USER").format("Un-Gban"))
         return
     try:
         userz = await client.get_users(user)
     except:
-        await ungbun.edit(f"`404 : User Doesn't Exists!`")
+        await ungbun.edit(engine.get_string("USER_MISSING").format("User Doesn't Exists In This Chat !")))
         return
     if userz.id == (client.me).id:
-        await ungbun.edit("`Oh, This is So Funny Btw :/`")
+        await ungbun.edit(engine.get_string("TF_DO_IT").format("Un-GBan"))
         return
     if not await gban_info(userz.id):
         await ungbun.edit("`Un-Gban A Ungbanned User? Seriously? :/`")
@@ -243,7 +243,7 @@ async def watch(client, message):
 async def give_glist(client, message):
     engine = message.Engine
     oof = "**#GBanList** \n\n"
-    glist = await edit_or_reply(message, "`Processing..`")
+    glist = await edit_or_reply(message, engine.get_string("PROCESSING"))
     list_ = await gban_list()
     if len(list_) == 0:
         await glist.edit("`No User is Gbanned Till Now!`")
@@ -262,16 +262,16 @@ async def give_glist(client, message):
 )
 async def gbroadcast(client, message):
     engine = message.Engine
-    msg_ = await edit_or_reply(message, "`Fetching Your ChatList!`")
+    msg_ = await edit_or_reply(message, engine.get_string("PROCESSING"))
     failed = 0
     if not message.reply_to_message:
-        await msg_.edit("`Reply To Message Boss!`")
+        await msg_.edit(engine.get_string("NEEDS_REPLY").format("Message"))
         return
     chat_dict = await iter_chats(client)
     chat_len = len(chat_dict)
     await msg_.edit("`Now Sending To All Chats Possible!`")
     if not chat_dict:
-        msg_.edit("`You Have No Chats! So Sad`")
+        msg_.edit(engine.get_string("NO_CHATS"))
         return
     for c in chat_dict:
         try:
@@ -279,5 +279,5 @@ async def gbroadcast(client, message):
         except:
             failed += 1
     await msg_.edit(
-        f"`Message Sucessfully Send To {chat_len-failed} Chats! Failed In {failed} Chats.`"
+        engine.get_string("BROADCAST_8").format(chat_len-failed, failed)
     )
