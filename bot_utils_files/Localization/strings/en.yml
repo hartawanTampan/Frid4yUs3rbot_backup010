@@ -151,7 +151,7 @@ WELCOME_SAVED: "`Done! Welcome Message Saved!`"
 YANDEX: "<b>Reverse Search Conpleted!</b>
 Reverse Searched Link:- {}
 Note:- Yandex is a Russian search engine, so better open link in chrome with auto-translate.
-Another Note:- Don't Use This Command continually, Yandex Will Block Your Request.
+Another Note:- Don't Use This Command continuously, Yandex Will Block Your Request.
 <u><b>Reverse Search Completed By Friday.
 Get Your Own Friday From @FRIDAYCHAT.</b></u>
 "
@@ -161,3 +161,29 @@ LOOKING_FOR_IMG: "[{}]({})\n\n`Looking for this Image...`"
 PROCESS_FAILED: "`Failed To Get Results. Google Doesn't Seem Happy With Me."
 REPLY_CODE: "`Reply To A Code, My Master!`"
 INVALID_RC_LANG: "`Invalid Language Selected!`"
+RC_OUTPUT_R: "**▶ Code :** \n`{}` 
+**▶ Result :** 
+`{}`
+**▶ Error :** 
+`{}`
+**▶ Stats :**
+ `{}`
+**▶ Success :** 
+ `{}`
+**▶ Warnings :** 
+ `{}`
+**▶ Reason :**
+ `{}`
+"
+RC_OUTPUT: "**▶ Code :** \n`{}` 
+**▶ Result :** 
+`{}`
+**▶ Error :** 
+`{}`
+**▶ Stats :**
+ `{}`
+**▶ Success :** 
+ `{}`
+**▶ Warnings :** 
+ `{}`
+"
