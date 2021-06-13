@@ -204,7 +204,7 @@ async def ujwalzombie(client, message):
                     f += 1
         text = ""
         if s > 0:
-            text += f"engine.get_string("REMOVED_ZOMBIES").format(s)"
+            text += engine.get_string("REMOVED_ZOMBIES").format(s)
         if f > 0:
             text += (engine.get_string("FAILED_ZOMBIES").format(f))
         await pablo.edit(text)
