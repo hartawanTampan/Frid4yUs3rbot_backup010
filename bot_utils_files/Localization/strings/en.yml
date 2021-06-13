@@ -202,3 +202,4 @@ BASH_OUT: "**▶ CMD :**
 **▶ Return Code :** 
 `{}`
 "
+EVAL: "**▶ Code :** \n`{}` \n\n**▶ Output / TraceBack :** \n`{}`"
