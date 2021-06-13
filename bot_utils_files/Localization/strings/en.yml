@@ -160,7 +160,6 @@ IMG_NOT_FOUND: "Image Not Found In {}"
 REVERSING: "`Hmm... Reverse Searching The Image On {}...🚶`"
 LOOKING_FOR_IMG: "[{}]({})\n\n`Looking for this Image...`"
 PROCESS_FAILED: "`Failed To Get Results. Google Doesn't Seem Happy With Me."
-REPLY_CODE: "`Reply To A Code, My Master!`"
 INVALID_RC_LANG: "`Invalid Language Selected!`"
 RC_OUTPUT_R: "**▶ Code :** \n`{}` 
 **▶ Result :** 
