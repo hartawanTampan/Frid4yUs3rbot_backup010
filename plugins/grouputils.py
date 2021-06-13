@@ -41,7 +41,7 @@ from main_startup.helper_func.plugin_helpers import (
 async def spin(client, message):
     engine = message.Engine
     if not message.reply_to_message:
-        await edit_or_reply(message, "`Reply To A Message To Pin!`")
+        await edit_or_reply(message, engine.get_string("REPLY_TO_PIN"))
     try:
         await client.pin_chat_message(
             message.chat.id,
@@ -50,10 +50,10 @@ async def spin(client, message):
         )
     except BaseException as e:
         await edit_or_reply(
-            message, f"`I Am UnAble To Pin That Message` \n**Error :** `{e}`"
+            message, engine.get_string("UNABLE_TO_PIN").format(e)
         )
         return
-    await edit_or_reply(message, "`I Have Pinned This Message!`")
+    await edit_or_reply(message, engine.get_string("PINNED"))
 
 
 @friday_on_cmd(
