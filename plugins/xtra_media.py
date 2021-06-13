@@ -88,7 +88,7 @@ def download_imgs_from_google(query: str, lim: int):
     }
     paths = response.download(arguments)
     path_ = paths[0][query]
-    Beast = [InputMediaPhoto(f"{x}") for x in path_]
+    Beast = [InputMediaPhoto(str(x)) for x in path_]
     return path_, Beast
 
 @run_in_exc
