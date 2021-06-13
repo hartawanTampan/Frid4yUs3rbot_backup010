@@ -32,7 +32,7 @@ EVAL = "**▶ Code :** \n`{code}` \n\n**▶ Output / TraceBack :** \n`{result}`"
 )
 async def eval(client, message):
     engine = message.Engine
-    stark = await edit_or_reply(message, engine.get_string("CODE_RUNNING"))
+    stark = await edit_or_reply(message, engine.get_string("PROCESSING"))
     cmd = get_text(message)
     if not cmd:
         await stark.edit(engine.get_string("INPUT_REQ").format("Chat ID"))
@@ -86,7 +86,7 @@ async def aexec(code, client, message):
 )
 async def any_lang_cmd_runner(client, message):
     engine = message.Engine
-    stark = await edit_or_reply(message, engine.get_string("CODE_RUNNING"))
+    stark = await edit_or_reply(message, engine.get_string("PROCESSING"))
     if len(message.text.split()) == 1:
         await stark.edit(engine.get_string("INPUT_REQ").format("Chat ID"))
         return
