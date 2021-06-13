@@ -87,7 +87,7 @@ def download_imgs_from_google(query: str, lim: int):
         "no_directory": "no_directory",
     }
     paths = response.download(arguments)
-    return paths[0][guess]
+    return paths[0][query]
 
 @run_in_exc
 def get_img_search_result(imoge: str):
@@ -137,17 +137,18 @@ async def reverseing(client, message):
         await pablo.edit(engine.get_string("IMG_NOT_FOUND").format("google"))
         return
     await pablo.edit(f"[{guess}]({fetchUrl})\n\n[Visually similar images]({imgspage})")
-    if input_.isdigit():
-        lim = int(input_)
-        lst = await download_imgs_from_google(quess, lim)
-        Beast = []
-        for x in lst:
-            try:
-                Beast.append(InputMediaPhoto(f"{x}"))
-            except:
-                pass
-        await client.send_media_group(message.chat.id, media=Beast)
-        shutil.rmtree(os.path.dirname(os.path.abspath(lst[0])))
+    if input_:
+        if input_.isdigit():
+            lim = int(input_)
+            lst = await download_imgs_from_google(quess, lim)
+            Beast = []
+            for x in lst:
+                try:
+                    Beast.append(InputMediaPhoto(f"{x}"))
+                except:
+                    pass
+            await client.send_media_group(message.chat.id, media=Beast)
+            shutil.rmtree(os.path.dirname(os.path.abspath(lst[0])))
     
 @run_in_exc
 def ParseSauce(googleurl):
