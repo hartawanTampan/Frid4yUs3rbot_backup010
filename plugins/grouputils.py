@@ -516,7 +516,7 @@ async def ujwal_unmute(client, message):
 )
 async def owo_chat_info(client, message):
     engine = message.Engine
-    s = await edit_or_reply(message, "`Trying To Get ChatInfo!`")
+    s = await edit_or_reply(message, engine.get_string("PROCESSING"))
     ujwal = await client.get_chat(message.chat.id)
     peer = await client.resolve_peer(message.chat.id)
     online_ = await client.send(pyrogram.raw.functions.messages.GetOnlines(peer=peer))
@@ -554,15 +554,15 @@ async def purge(client, message):
     start_time = time.time()
     message_ids = []
     purge_len = 0
-    event = await edit_or_reply(message, "`Starting To Purge Messages!`")
+    event = await edit_or_reply(message, engine.get_string("PROCESSING"))
     me_m = client.me
     if message.chat.type in ["supergroup", "channel"]:
         me_ = await message.chat.get_member(int(me_m.id))
         if not me_.can_delete_messages:
-            await event.edit("`I Need Delete Permission To Do This!`")
+            await event.edit(engine.get_string("NOT_ADMIN"))
             return
     if not message.reply_to_message:
-        await event.edit("`Reply To Message To Purge!`")
+        await event.edit(engine.get_string("NEEDS_REPLY").format("a message to purge"))
         return
     async for msg in client.iter_history(
         chat_id=message.chat.id,
@@ -584,6 +584,7 @@ async def purge(client, message):
     end_time = time.time()
     u_time = round(end_time - start_time)
     await event.edit(
+        engine.get_string("PURGE_").format(purge_len, u_time)
         f"**>> Flash Purge Done!** \n**>> Total Message Purged :** `{purge_len}` \n**>> Time Taken :** `{u_time}`",
     )
     await asyncio.sleep(3)
@@ -619,24 +620,24 @@ async def delmsgs(client, message):
 )
 async def magic_grps(client, message):
     engine = message.Engine
-    msg_ = await edit_or_reply(message, "`Please Wait!`")
+    msg_ = await edit_or_reply(message, engine.get_string("PROCESSING"))
     if not message.reply_to_message:
-        await msg_.edit("`Reply To Image Please?`")
+        await msg_.edit(engine.get_string("NEEDS_REPLY").format("image"))
         return
     me_ = await message.chat.get_member(int(client.me.id))
     if not me_.can_change_info:
-        await msg_.edit("`I Need Delete Permission To Do This!`")
+        await msg_.edit(engine.get_string("NOT_ADMIN"))
         return
     cool = await convert_to_image(message, client)
     if not cool:
-        await msg_.edit("`Reply to a valid media first.`")
+        await msg_.edit(engine.get_string("NEEDS_REPLY").format("a valid media"))
         return
     if not os.path.exists(cool):
-        await msg_.edit("`Invalid Media!`")
+        await msg_.edit(engine.get_string("INVALID_MEDIA"))
         return
     try:
         await client.set_chat_photo(message.chat.id, photo=cool)
     except BaseException as e:
         await msg_.edit(f"`Unable To Set Group Photo! TraceBack : {e}")
         return
-    await msg_.edit("`Done! Sucessfully Set This Pic As Chat Pic Of This Chat!")
+    await msg_.edit(engine.get_string("DONE_"))
