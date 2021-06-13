@@ -150,11 +150,10 @@ UPDATER_ERROR: "**Updater Error** \nTraceBack : `{}`"
 REPLY_TO_WELCOME: "`Reply To Message To Save As Welcome Message!`"
 WELCOME_SAVED: "`Done! Welcome Message Saved!`"
 YANDEX: "<b>Reverse Search Conpleted!</b>
+
 Reverse Searched Link:- {}
-Note:- Yandex is a Russian search engine, so better open link in chrome with auto-translate.
-Another Note:- Don't Use This Command continuously, Yandex Will Block Your Request.
-<u><b>Reverse Search Completed By Friday.
-Get Your Own Friday From @FRIDAYCHAT.</b></u>
+
+> <code>Yandex is a Russian search engine, so better open link in chrome with auto-translate.</code>
 "
 IMG_NOT_FOUND: "Image Not Found In {}"
 REVERSING: "`Hmm... Reverse Searching The Image On {}...🚶`"
