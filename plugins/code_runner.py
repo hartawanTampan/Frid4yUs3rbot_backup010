@@ -135,21 +135,7 @@ async def sed_terminal(client, message):
     pid, err, out, ret = await run_command(cmd)
     if not out:
         out = "No OutPut!"
-    friday = f"""**▶ CMD :**
-`{cmd}`
-
-**▶ PID :**
-`{pid}`
-
-**▶ Error TraceBack (If Any) :**
-`{err}`
-
-**▶ Output / Result (If Any) :**
-`{out}`
-
-**▶ Return Code :** 
-`{ret}`
-"""
+    friday = engine.get_string("BASH_OUT").format(cmd, pid, err, out, ret)
     await edit_or_send_as_file(friday, stark, client, cmd, "bash-result")
 
 
