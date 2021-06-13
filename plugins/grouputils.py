@@ -315,29 +315,29 @@ async def unban_world(client, message):
 )
 async def ujwal_mote(client, message):
     engine = message.Engine
-    pablo = await edit_or_reply(message, "`Trying To Promote User!`")
+    pablo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     me_m = client.me
     me_ = await message.chat.get_member(int(me_m.id))
     if not me_.can_promote_members:
-        await pablo.edit("`Boss, You Don't Have Promote Permission!`")
+        await pablo.edit(engine.get_string("NOT_ADMIN"))
         return
     asplit = get_text(message)
     userl, Res = get_user(message, asplit)
     if not userl:
         await pablo.edit(
-            "`Bruh, Please Reply To User / Give Me Username of ID To Promote!`"
+            engine.get_string("TO_DO").format("Promote")
         )
         return
     try:
         user = await client.get_users(userl)
     except:
-        await pablo.edit(f"`404 : User Doesn't Exists In This Chat !`")
+        await pablo.edit(engine.get_string("USER_MISSING").format("User Doesn't Exists In This Chat !"))
         return
     userz = user.id
     if not Res:
         Res = "Admeme"
     if userz == me_m.id:
-        await pablo.edit("`🙄 Nice Idea, Lets Self Promote!`")
+        await pablo.edit(engine.get_string("TF_DO_IT").format("Promote"))
         return
     try:
         await client.promote_chat_member(
@@ -351,7 +351,7 @@ async def ujwal_mote(client, message):
             can_promote_members=me_.can_promote_members,
         )
     except BaseException as e:
-        await pablo.edit(f"`I Am Un-Able To Promote This User` \n**Error :** `{e}`")
+        await pablo.edit(engine.get_string("FAILED_ADMIN_ACTION").format("Promote", e))
         return
     p = f"**#Promote** \n**User :** [{user.first_name}](tg://user?id={user.id}) \n**Chat :** `{message.chat.title}` \n**Title :** `{Res}`"
     await pablo.edit(p)
@@ -375,24 +375,24 @@ async def ujwal_mote(client, message):
 )
 async def ujwal_demote(client, message):
     engine = message.Engine
-    pablo = await edit_or_reply(message, "`Trying To Demote User!`")
+    pablo = await edit_or_reply(message, engine.get_string("PROCESSING")))
     me_m = client.me
     await message.chat.get_member(int(me_m.id))
     asplit = get_text(message)
     usero = get_user(message, asplit)[0]
     if not usero:
         await pablo.edit(
-            "`Bruh, Please Reply To User / Give Me Username of ID To Demote!`"
+            engine.get_string("TO_DO").format("Demote")
         )
         return
     try:
         user = await client.get_users(usero)
     except:
-        await pablo.edit(f"`404 : User Doesn't Exists In This Chat !`")
+        await pablo.edit(engine.get_string("USER_MISSING").format("User Doesn't Exists In This Chat !"))
         return
     userz = user.id
     if userz == me_m.id:
-        await pablo.edit("`🙄 Nice Idea, Lets Self Demote!`")
+        await pablo.edit(engine.get_string("TF_DO_IT").format("Demote"))
         return
     try:
         await client.promote_chat_member(
@@ -409,7 +409,7 @@ async def ujwal_demote(client, message):
             can_promote_members=False,
         )
     except BaseException as e:
-        await pablo.edit(f"`I Wasn't Able To Demote That User` \n**Error :** `{e}`")
+        await pablo.edit(engine.get_string("FAILED_ADMIN_ACTION").format("Demote", e))
         return
     d = f"**#Demote** \n**User :** [{user.first_name}](tg://user?id={user.id}) \n**Chat :** `{message.chat.title}`"
     await pablo.edit(d)
