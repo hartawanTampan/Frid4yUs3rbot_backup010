@@ -122,7 +122,7 @@ async def reverseing(client, message):
     input_ = get_text(message)
     pablo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     if not message.reply_to_message or not message.reply_to_message.photo:
-        await pablo.edit(engine.get_string("NEEDS_REPLY"))
+        await pablo.edit(engine.get_string("NEEDS_REPLY").format("photo"))
         return
     imoge = await message.reply_to_message.download()
     fetchUrl = await get_img_search_result(imoge)
@@ -137,8 +137,8 @@ async def reverseing(client, message):
         await pablo.edit(engine.get_string("IMG_NOT_FOUND").format("google"))
         return
     await pablo.edit(f"[{guess}]({fetchUrl})\n\n[Visually similar images]({imgspage})")
-    if input_:
-        lim = 5
+    if input_.isdigit():
+        lim = int(input_)
         lst = await download_imgs_from_google(quess, lim)
         Beast = []
         for x in lst:
@@ -178,10 +178,9 @@ def ParseSauce(googleurl):
 async def yandex_(client, message):
     engine = message.Engine
     pablo = await edit_or_reply(
-        message, "`hmm... Reverse Searching The Image On Yandex...🚶`"
-    )
+        message, engine.get_string("PROCESSING"))
     if not message.reply_to_message or not message.reply_to_message.photo:
-        await pablo.edit("Reply to A image...")
+        await pablo.edit(engine.get_string("NEEDS_REPLY").format("photo"))
         return
     imoge = await message.reply_to_message.download()
     filePath = imoge
@@ -196,16 +195,10 @@ async def yandex_(client, message):
     try:
         query_string = json.loads(response.content)["blocks"][0]["params"]["url"]
     except:
-        await pablo.edit("Image Not Found In Yandex")
+        await pablo.edit(engine.get_string("IMG_NOT_FOUND").format("yandex"))
         return
     img_search_url = searchUrl + "?" + query_string
-    caption = f"""<b>Reverse Search Conpleted!</b>
-Reverse Searched Link:- {img_search_url}
-Note:- Yandex is a Russian search engine, so better open link in chrome with auto-translate.
-Another Note:- Don't Use This Command continually, Yandex Will Block Your Request.
-<u><b>Reverse Search Completed By Friday.
-Get Your Own Friday From @FRIDAYCHAT.</b></u>
-"""
+    caption = engine.get_string("YANDEX").format(img_search_url)
     await pablo.edit(caption, parse_mode="HTML")
     os.remove(imoge)
 
@@ -219,10 +212,10 @@ Get Your Own Friday From @FRIDAYCHAT.</b></u>
 )
 async def img_search(client, message):
     engine = message.Engine
-    pablo = await edit_or_reply(message, "`Processing...`")
+    pablo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     query = get_text(message)
     if not query:
-        await pablo.edit("`Give Text For Image Search!`")
+        await pablo.edit(engine.get_string("INPUT_REQ").format("Query"))
         return
     if "|" in query:
         lim = query.split("|")[1] if (query.split("|")[1]).isdigit() else 5
@@ -249,11 +242,11 @@ async def img_search(client, message):
 )
 async def wow_nice(client, message):
     engine = message.Engine
-    msg_ = await edit_or_reply(message, "`Please Wait!`")
+    msg_ = await edit_or_reply(message, engine.get_string("PROCESSING"))
     random_s = random.randint(0, 63)
     te_t = get_text(message)
     if not te_t:
-        msg_.edit("`Give Input Boss!`")
+        msg_.edit(engine.get_string("INPUT_REQ").format("Text"))
         return
     text = f"#{random_s} {te_t}"
     nice = await client.get_inline_bot_results(bot="stickerizerbot", query=text)
