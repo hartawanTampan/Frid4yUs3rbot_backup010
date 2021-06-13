@@ -39,6 +39,7 @@ from main_startup.helper_func.plugin_helpers import (
     },
 )
 async def spin(client, message):
+    engine = message.Engine
     if not message.reply_to_message:
         await edit_or_reply(message, "`Reply To A Message To Pin!`")
     try:
@@ -64,6 +65,7 @@ async def spin(client, message):
     },
 )
 async def lpin(client, message):
+    engine = message.Engine
     if not message.reply_to_message:
         await edit_or_reply(message, "`Reply To A Message To Pin!`")
     try:
@@ -84,6 +86,7 @@ async def lpin(client, message):
     cmd_help={"help": "Unpin All Pinned Messages!", "example": "{ch}rmpins"},
 )
 async def dpins(client, message):
+    engine = message.Engine
     await client.unpin_all_chat_messages(message.chat.id)
     await edit_or_reply(message, "`All Pinned Messages Unpinned Successfully!`")
 
@@ -93,6 +96,7 @@ async def dpins(client, message):
     cmd_help={"help": "Get Adminlist Of Chat!", "example": "{ch}adminlist"},
 )
 async def midhunadmin(client, message):
+    engine = message.Engine
     mentions = ""
     starky = get_text(message) if get_text(message) else message.chat.id
     pablo = await edit_or_reply(message, "`Searching For Admins!`")
@@ -129,6 +133,7 @@ async def midhunadmin(client, message):
     cmd_help={"help": "Get List Of Bots In Chat!", "example": "{ch}botlist"},
 )
 async def bothub(client, message):
+    engine = message.Engine
     buts = "**Bot List** \n\n"
     nos = 0
     starky = get_text(message) if get_text(message) else message.chat.id
@@ -152,6 +157,7 @@ async def bothub(client, message):
     },
 )
 async def ujwalzombie(client, message):
+    engine = message.Engine
     pablo = await edit_or_reply(message, "`Searching For Zombies 🧟 .....`")
     if len(message.text.split()) == 1:
         dm = 0
@@ -218,6 +224,7 @@ async def ujwalzombie(client, message):
     },
 )
 async def ban_world(client, message):
+    engine = message.Engine
     bun = await edit_or_reply(message, "`Trying To Ban User!`")
     me_m = client.me
     me_ = await message.chat.get_member(int(me_m.id))
@@ -266,6 +273,7 @@ async def ban_world(client, message):
     },
 )
 async def unban_world(client, message):
+    engine = message.Engine
     unbun = await edit_or_reply(message, "`Trying To Un-Ban User!`")
     me_m = client.me
     me_ = await message.chat.get_member(int(me_m.id))
@@ -310,6 +318,7 @@ async def unban_world(client, message):
     },
 )
 async def ujwal_mote(client, message):
+    engine = message.Engine
     pablo = await edit_or_reply(message, "`Trying To Promote User!`")
     me_m = client.me
     me_ = await message.chat.get_member(int(me_m.id))
@@ -369,6 +378,7 @@ async def ujwal_mote(client, message):
     },
 )
 async def ujwal_demote(client, message):
+    engine = message.Engine
     pablo = await edit_or_reply(message, "`Trying To Demote User!`")
     me_m = client.me
     await message.chat.get_member(int(me_m.id))
@@ -421,6 +431,7 @@ async def ujwal_demote(client, message):
     },
 )
 async def ujwal_mute(client, message):
+    engine = message.Engine
     pablo = await edit_or_reply(message, "`Trying To Mute User!`")
     me_m = client.me
     me_ = await message.chat.get_member(int(me_m.id))
@@ -466,6 +477,7 @@ async def ujwal_mute(client, message):
     },
 )
 async def ujwal_unmute(client, message):
+    engine = message.Engine
     pablo = await edit_or_reply(message, "`Trying To Un-Mute User!`")
     me_m = client.me
     me_ = await message.chat.get_member(int(me_m.id))
@@ -507,6 +519,7 @@ async def ujwal_unmute(client, message):
     cmd_help={"help": "Get Info Of The Chat!", "example": "{ch}chatinfo"},
 )
 async def owo_chat_info(client, message):
+    engine = message.Engine
     s = await edit_or_reply(message, "`Trying To Get ChatInfo!`")
     ujwal = await client.get_chat(message.chat.id)
     peer = await client.resolve_peer(message.chat.id)
@@ -541,6 +554,7 @@ async def owo_chat_info(client, message):
     },
 )
 async def purge(client, message):
+    engine = message.Engine
     start_time = time.time()
     message_ids = []
     purge_len = 0
@@ -588,6 +602,7 @@ async def purge(client, message):
     },
 )
 async def delmsgs(client, message):
+    engine = message.Engine
     if not message.reply_to_message:
         await message.delete()
         return
@@ -607,6 +622,7 @@ async def delmsgs(client, message):
     },
 )
 async def magic_grps(client, message):
+    engine = message.Engine
     msg_ = await edit_or_reply(message, "`Please Wait!`")
     if not message.reply_to_message:
         await msg_.edit("`Reply To Image Please?`")
