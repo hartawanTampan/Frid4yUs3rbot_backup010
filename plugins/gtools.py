@@ -32,6 +32,7 @@ from plugins import devs_id
     },
 )
 async def gmute_him(client, message):
+    engine = message.Engine
     g = await edit_or_reply(message, "`Processing..`")
     text_ = get_text(message)
     user, reason = get_user(message, text_)
@@ -72,6 +73,7 @@ async def gmute_him(client, message):
     },
 )
 async def gmute_him(client, message):
+    engine = message.Engine
     ug = await edit_or_reply(message, "`Processing..`")
     text_ = get_text(message)
     user_ = get_user(message, text_)[0]
@@ -107,6 +109,7 @@ async def gmute_him(client, message):
     },
 )
 async def gbun_him(client, message):
+    engine = message.Engine
     gbun = await edit_or_reply(message, "`Processing..`")
     text_ = get_text(message)
     user, reason = get_user(message, text_)
@@ -160,6 +163,7 @@ async def gbun_him(client, message):
     },
 )
 async def ungbun_him(client, message):
+    engine = message.Engine
     ungbun = await edit_or_reply(message, "`Processing..`")
     text_ = get_text(message)
     user = get_user(message, text_)[0]
@@ -237,6 +241,7 @@ async def watch(client, message):
     },
 )
 async def give_glist(client, message):
+    engine = message.Engine
     oof = "**#GBanList** \n\n"
     glist = await edit_or_reply(message, "`Processing..`")
     list_ = await gban_list()
@@ -256,6 +261,7 @@ async def give_glist(client, message):
     },
 )
 async def gbroadcast(client, message):
+    engine = message.Engine
     msg_ = await edit_or_reply(message, "`Fetching Your ChatList!`")
     failed = 0
     if not message.reply_to_message:
