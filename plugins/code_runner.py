@@ -90,7 +90,7 @@ async def any_lang_cmd_runner(client, message):
         await stark.edit(engine.get_string("INPUT_REQ").format("Chat ID"))
         return
     if not message.reply_to_message:
-        await stark.edit(engine.get_string("REPLY_CODE"))
+        await stark.edit(engine.get_string("NEEDS_REPLY").format("Code"))
         return
     reply_code = message.reply_to_message.text
     lang = message.text.split(None, 1)[1]
