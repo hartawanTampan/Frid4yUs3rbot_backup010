@@ -25,10 +25,11 @@ GMAPS_LOC = "https://maps.googleapis.com/maps/api/geocode/json"
     },
 )
 async def gps(client, message):
-    pablo = await edit_or_reply(message, "`Processing...`")
+    engine = message.Engine
+    pablo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     args = get_text(message)
     if not args:
-        await pablo.edit("Please Provide location for sending GPS")
+        await pablo.edit(engine.get_string("INPUT_REQ").format("Chat ID"))
         return
     try:
         geolocator = Nominatim(user_agent="FridayUB")
