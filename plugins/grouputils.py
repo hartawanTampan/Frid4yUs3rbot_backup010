@@ -99,12 +99,12 @@ async def midhunadmin(client, message):
     engine = message.Engine
     mentions = ""
     starky = get_text(message) if get_text(message) else message.chat.id
-    pablo = await edit_or_reply(message, "`Searching For Admins!`")
+    pablo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     try:
         X = await client.get_chat_members(starky, filter="administrators")
         ujwal = await client.get_chat(starky)
     except BaseException as e:
-        await pablo.edit(f"Couldn't Fetch Chat Admins, \n\n**TraceBack :** `{e}`")
+        await pablo.edit(engine.get_string("CANT_FETCH_ADMIN").format(e))
         return
     for midhun in X:
         if not midhun.user.is_deleted:
