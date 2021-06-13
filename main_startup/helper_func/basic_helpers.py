@@ -15,7 +15,6 @@ import time
 from math import ceil
 from traceback import format_exc
 from typing import Tuple
-
 from pyrogram import Client
 from pyrogram.errors import FloodWait, MessageNotModified
 from pyrogram.types import (
@@ -24,11 +23,16 @@ from pyrogram.types import (
     InputTextMessageContent,
     Message,
 )
-
 from main_startup import Friday, Friday2, Friday3, Friday4
 from main_startup.config_var import Config
-
+import multiprocessing
 import mimetypes
+import functools
+import threading
+from concurrent.futures import ThreadPoolExecutor
+
+max_workers = multiprocessing.cpu_count() * 5
+exc_ = ThreadPoolExecutor(max_workers=max_workers)
 
 
 def guess_mime_type(file_):
@@ -256,6 +260,13 @@ def humanbytes(size):
         size /= power
         raised_to_pow += 1
     return str(round(size, 2)) + " " + dict_power_n[raised_to_pow] + "B"
+
+def run_in_exc(f):
+    @functools.wraps(f)
+    async def wrapper(*args, **kwargs):
+        loop = asyncio.get_running_loop()
+        return await loop.run_in_executor(exc_, lambda: f(*args, **kwargs))
+    return wrapper
 
 
 def time_formatter(milliseconds: int) -> str:
