@@ -22,8 +22,6 @@ from main_startup.helper_func.basic_helpers import (
 )
 
 
-EVAL = "**▶ Code :** \n`{code}` \n\n**▶ Output / TraceBack :** \n`{result}`"
-
 
 @friday_on_cmd(
     cmd=["exec", "eval"],
@@ -61,6 +59,7 @@ async def eval(client, message):
         evaluation = stdout
     else:
         evaluation = "Success!"
+    EVAL = engine.get_string("EVAL")
     final_output = EVAL.format(code=cmd, result=evaluation)
     if len(cmd) >= 1023:
         capt = "Eval Result!"
