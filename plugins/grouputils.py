@@ -428,34 +428,34 @@ async def ujwal_demote(client, message):
 )
 async def ujwal_mute(client, message):
     engine = message.Engine
-    pablo = await edit_or_reply(message, "`Trying To Mute User!`")
+    pablo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     me_m = client.me
     me_ = await message.chat.get_member(int(me_m.id))
     if not me_.can_restrict_members:
-        await pablo.edit("`Boss, You Don't Have Mute Permission!`")
+        await pablo.edit(engine.get_string("NOT_ADMIN"))
         return
     asplit = get_text(message)
     userf = get_user(message, asplit)[0]
     if not userf:
         await pablo.edit(
-            "`Bruh, Please Reply To User / Give Me Username of ID To Mute!`"
+            engine.get_string("TO_DO").format("Mute")
         )
         return
     try:
         user = await client.get_users(userf)
     except:
-        await pablo.edit(f"`404 : User Doesn't Exists In This Chat !`")
+        await pablo.edit(engine.get_string("USER_MISSING").format("User Doesn't Exists In This Chat !"))
         return
     userz = user.id
     if userz == me_m.id:
-        await pablo.edit("`🙄 Nice Idea, Lets Self Mute!`")
+        await pablo.edit(engine.get_string("TF_DO_IT").format("Mute"))
         return
     try:
         await client.restrict_chat_member(
             message.chat.id, user.id, ChatPermissions(can_send_messages=False)
         )
     except BaseException as e:
-        await pablo.edit(f"`I Am UnAble To Mute That User` \n**Error :** `{e}`")
+        await pablo.edit(engine.get_string("FAILED_ADMIN_ACTION").format("Mute", e))
         return
     m = f"**#Muted** \n**User :** [{user.first_name}](tg://user?id={user.id}) \n**Chat :** `{message.chat.title}`"
     await pablo.edit(m)
@@ -474,34 +474,34 @@ async def ujwal_mute(client, message):
 )
 async def ujwal_unmute(client, message):
     engine = message.Engine
-    pablo = await edit_or_reply(message, "`Trying To Un-Mute User!`")
+    pablo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     me_m = client.me
     me_ = await message.chat.get_member(int(me_m.id))
     if not me_.can_restrict_members:
-        await pablo.edit("`Boss, You Don't Have Un-Mute Permission!`")
+        await pablo.edit(engine.get_string("NOT_ADMIN"))
         return
     asplit = get_text(message)
     userf = get_user(message, asplit)[0]
     if not userf:
         await pablo.edit(
-            "`Bruh, Please Reply To User / Give Me Username of ID To Unmute!`"
+            engine.get_string("TO_DO").format("Un-Mute")
         )
         return
     try:
         user = await client.get_users(userf)
     except:
-        await pablo.edit(f"`404 : User Doesn't Exists In This Chat !`")
+        await pablo.edit(engine.get_string("USER_MISSING").format("User Doesn't Exists In This Chat !"))
         return
     userz = user.id
     if userz == me_m.id:
-        await pablo.edit("`🙄 Nice Idea, Lets Self Un-Mute!`")
+        await pablo.edit(engine.get_string("TF_DO_IT").format("un-mute"))
         return
     try:
         await client.restrict_chat_member(
             message.chat.id, user.id, ChatPermissions(can_send_messages=True)
         )
     except BaseException as e:
-        await pablo.edit(f"`I Am UnAble To UN-Mute That User` \n**Error :** `{e}`")
+        await pablo.edit(engine.get_string("FAILED_ADMIN_ACTION").format("Un-mute", e))
         return
     um = f"**#Un_Muted** \n**User :** [{user.first_name}](tg://user?id={user.id}) \n**Chat :** `{message.chat.title}`"
     await pablo.edit(um)
