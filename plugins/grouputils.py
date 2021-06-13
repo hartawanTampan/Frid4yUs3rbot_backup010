@@ -67,17 +67,17 @@ async def spin(client, message):
 async def lpin(client, message):
     engine = message.Engine
     if not message.reply_to_message:
-        await edit_or_reply(message, "`Reply To A Message To Pin!`")
+        await edit_or_reply(message, engine.get_string("REPLY_TO_PIN"))
     try:
         await client.pin_chat_message(
             message.chat.id, message.reply_to_message.message_id
         )
     except BaseException as e:
         await edit_or_reply(
-            message, f"`I Am UnAble To Pin That Message` \n**Error :** `{e}`"
+            message, engine.get_string("UNABLE_TO_PIN").format(e)
         )
         return
-    await edit_or_reply(message, "`Message Pinned Successfully!`")
+    await edit_or_reply(message, engine.get_string("PINNED"))
 
 
 @friday_on_cmd(
@@ -88,7 +88,7 @@ async def lpin(client, message):
 async def dpins(client, message):
     engine = message.Engine
     await client.unpin_all_chat_messages(message.chat.id)
-    await edit_or_reply(message, "`All Pinned Messages Unpinned Successfully!`")
+    await edit_or_reply(message, engine.get_string("UNPINNED"))
 
 
 @friday_on_cmd(
