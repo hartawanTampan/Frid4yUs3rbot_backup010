@@ -31,12 +31,11 @@ EVAL = "**▶ Code :** \n`{code}` \n\n**▶ Output / TraceBack :** \n`{result}`"
     cmd_help={"help": "Run Python Code!", "example": '{ch}eval print("FridayUserBot")'},
 )
 async def eval(client, message):
-    stark = await edit_or_reply(message, "`Running Code... Please Wait!`")
+    engine = message.Engine
+    stark = await edit_or_reply(message, engine.get_string("CODE_RUNNING"))
     cmd = get_text(message)
     if not cmd:
-        await stark.edit(
-            "`Please Give Me A Valid Input. You Can Check Help Menu To Know More!`"
-        )
+        await stark.edit(engine.get_string("INPUT_REQ").format("Chat ID"))
         return
     if message.reply_to_message:
         message.reply_to_message.message_id
@@ -86,22 +85,21 @@ async def aexec(code, client, message):
     },
 )
 async def any_lang_cmd_runner(client, message):
-    stark = await edit_or_reply(message, "`Running Code... Please Wait!`")
+    engine = message.Engine
+    stark = await edit_or_reply(message, engine.get_string("CODE_RUNNING"))
     if len(message.text.split()) == 1:
-        await stark.edit(
-            "`Please Give Me A Valid Input. You Can Check Help Menu To Know More!`"
-        )
+        await stark.edit(engine.get_string("INPUT_REQ").format("Chat ID"))
         return
     if not message.reply_to_message:
-        await stark.edit("`Reply To A Code, My Master!`")
+        await stark.edit(engine.get_string("REPLY_CODE"))
         return
     reply_code = message.reply_to_message.text
     lang = message.text.split(None, 1)[1]
     if not lang.lower() in langs:
-        await stark.edit("`Invalid Language Selected!`")
+        await stark.edit(engine.get_string("INVALID_RC_LANG"))
         return
     if reply_code is None:
-        await stark.edit("`Reply To A Code, My Master!`")
+        await stark.edit(engine.get_string("REPLY_CODE"))
         return
     data = {
         "code": reply_code,
@@ -148,12 +146,11 @@ async def any_lang_cmd_runner(client, message):
     cmd_help={"help": "Run Bash/Terminal Command!", "example": "{ch}bash ls"},
 )
 async def sed_terminal(client, message):
-    stark = await edit_or_reply(message, "`Please Wait!`")
+    engine = message.Engine
+    stark = await edit_or_reply(message, engine.get_string("WAIT"))
     cmd = get_text(message)
     if not cmd:
-        await stark.edit(
-            "`Please Give Me A Valid Input. You Can Check Help Menu To Know More!`"
-        )
+        await stark.edit(engine.get_string("INPUT_REQ").format("Chat ID"))
         return
     cmd = message.text.split(None, 1)[1]
     if message.reply_to_message:
