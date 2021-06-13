@@ -104,7 +104,7 @@ async def midhunadmin(client, message):
         X = await client.get_chat_members(starky, filter="administrators")
         ujwal = await client.get_chat(starky)
     except BaseException as e:
-        await pablo.edit(engine.get_string("CANT_FETCH_ADMIN").format(e))
+        await pablo.edit(engine.get_string("CANT_FETCH_ADMIN").format("Admins", e))
         return
     for midhun in X:
         if not midhun.user.is_deleted:
@@ -137,11 +137,11 @@ async def bothub(client, message):
     buts = "**Bot List** \n\n"
     nos = 0
     starky = get_text(message) if get_text(message) else message.chat.id
-    pablo = await edit_or_reply(message, "`Searching For Bots!`")
+    pablo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     try:
         bots = await client.get_chat_members(starky, filter="bots")
     except BaseException as e:
-        await pablo.edit(f"Couldn't Fetch Chat Admins, \n**TraceBack :** `{e}`")
+        await pablo.edit(engine.get_string("CANT_FETCH_ADMIN").format("Bots", e))
         return
     for ujwal in bots:
         nos += 1
@@ -158,7 +158,7 @@ async def bothub(client, message):
 )
 async def ujwalzombie(client, message):
     engine = message.Engine
-    pablo = await edit_or_reply(message, "`Searching For Zombies 🧟 .....`")
+    pablo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     if len(message.text.split()) == 1:
         dm = 0
         da = 0
@@ -174,26 +174,24 @@ async def ujwalzombie(client, message):
                     dc += 1
         text = "**Zombies Report!** \n\n"
         if dm > 0:
-            text += f"**Total Zombies (Members) :** `{dm}` \n"
+            text += engine.get_string("TOTAL_ZOMBIES_USERS").format(dm)
         if da > 0:
-            text += f"\n**Total Zombies (Admins) :** `{da}` \n"
+            text += engine.get_string("TOTAL_ZOMBIES_ADMINS").format(da)
         if dc > 0:
-            text += "\n__This Group Owner Deleted His Account :/__ \n"
+            text += engine.get_string("GRP_OWNER_IS_ZOMBIE")
         d = dm + da + dc
         if d > 0:
-            text += (
-                "\n\nClean These Deleted Accounts By Using `.zombies clean` Command!"
-            )
+            text += (engine.get_string("WIPE_THEM"))
             await pablo.edit(text)
         else:
-            await pablo.edit("No Zombies Found. Group is Clean 😊")
+            await pablo.edit(engine.get_string("NO_ZOMBIES"))
         return
     sgname = message.text.split(None, 1)[1]
     if sgname.lower().strip() == "clean":
         me = client.me
         lol = await is_admin_or_owner(message, me.id)
         if not lol:
-            await pablo.edit("`I am not an admin here!`")
+            await pablo.edit(engine.get_string("NOT_ADMIN"))
             return
         s = 0
         f = 0
@@ -206,11 +204,9 @@ async def ujwalzombie(client, message):
                     f += 1
         text = ""
         if s > 0:
-            text += f"Successfully Removed {s} Zombies"
+            text += f"engine.get_string("REMOVED_ZOMBIES").format(s)"
         if f > 0:
-            text += (
-                f"\nFailed to remove {f} zombies as they are either admins or creator"
-            )
+            text += (engine.get_string("FAILED_ZOMBIES").format(f))
         await pablo.edit(text)
 
 
