@@ -187,3 +187,18 @@ RC_OUTPUT: "**▶ Code :** \n`{}`
 **▶ Warnings :** 
  `{}`
 "
+BASH_OUT: "**▶ CMD :**
+`{}`
+
+**▶ PID :**
+`{}`
+
+**▶ Error TraceBack (If Any) :**
+`{}`
+
+**▶ Output / Result (If Any) :**
+`{}`
+
+**▶ Return Code :** 
+`{}`
+"
