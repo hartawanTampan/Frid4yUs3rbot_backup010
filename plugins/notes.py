@@ -22,6 +22,7 @@ from main_startup.helper_func.basic_helpers import edit_or_reply, get_text
     },
 )
 async def notes(client, message):
+    engine = message.Engine
     note_ = await edit_or_reply(message, "`Processing..`")
     note_name = get_text(message)
     if not note_name:
@@ -39,6 +40,7 @@ async def notes(client, message):
 
 @listen(filters.incoming & filters.regex("\#(\S+)"))
 async def lmao(client, message):
+    engine = message.Engine
     if await all_note(message.chat.id):
         pass
     else:
@@ -62,6 +64,7 @@ async def lmao(client, message):
     cmd_help={"help": "Delete Note In The Chat!", "example": "{ch}delnote (Note Name)"},
 )
 async def notes(client, message):
+    engine = message.Engine
     note_ = await edit_or_reply(message, "`Processing..`")
     note_name = get_text(message)
     if not note_name:
@@ -80,6 +83,7 @@ async def notes(client, message):
     cmd_help={"help": "Delete All The Notes In The Chat!", "example": "{ch}delnotes"},
 )
 async def noteses(client, message):
+    engine = message.Engine
     pablo = await edit_or_reply(message, "`Processing..`")
     poppy = await all_note(message.chat.id)
     if poppy is False:
@@ -94,6 +98,7 @@ async def noteses(client, message):
     cmd_help={"help": "List All The Chat Notes!", "example": "{ch}notes"},
 )
 async def noteses(client, message):
+    engine = message.Engine
     pablo = await edit_or_reply(message, "`Processing..`")
     poppy = await all_note(message.chat.id)
     if poppy is False:
