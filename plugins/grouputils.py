@@ -234,8 +234,8 @@ async def ban_world(client, message):
         return
     try:
         user_ = await client.get_users(userk)
-    except:
-        await bun.edit(engine.get_string("USER_MISSING").format("User Doesn't Exists In This Chat !"))
+    except BaseException as e:
+        await bun.edit(engine.get_string("USER_MISSING").format(e))
         return
     userz = user_.id
     if not reason:
@@ -285,8 +285,8 @@ async def unban_world(client, message):
         return
     try:
         user_ = await client.get_users(userm)
-    except:
-        await unbun.edit(engine.get_string("USER_MISSING").format("User Doesn't Exists In This Chat !"))
+    except BaseException as e:
+        await unbun.edit(engine.get_string("USER_MISSING").format(e))
         return
     userz = user_.id
     if not reason:
@@ -330,8 +330,8 @@ async def ujwal_mote(client, message):
         return
     try:
         user = await client.get_users(userl)
-    except:
-        await pablo.edit(engine.get_string("USER_MISSING").format("User Doesn't Exists In This Chat !"))
+    except BaseException as e:
+        await pablo.edit(engine.get_string("USER_MISSING").format(e))
         return
     userz = user.id
     if not Res:
@@ -387,8 +387,8 @@ async def ujwal_demote(client, message):
         return
     try:
         user = await client.get_users(usero)
-    except:
-        await pablo.edit(engine.get_string("USER_MISSING").format("User Doesn't Exists In This Chat !"))
+    except BaseException as e:
+        await pablo.edit(engine.get_string("USER_MISSING").format(e))
         return
     userz = user.id
     if userz == me_m.id:
@@ -443,8 +443,8 @@ async def ujwal_mute(client, message):
         return
     try:
         user = await client.get_users(userf)
-    except:
-        await pablo.edit(engine.get_string("USER_MISSING").format("User Doesn't Exists In This Chat !"))
+    except BaseException as e:
+        await pablo.edit(engine.get_string("USER_MISSING").format(e))
         return
     userz = user.id
     if userz == me_m.id:
@@ -489,8 +489,8 @@ async def ujwal_unmute(client, message):
         return
     try:
         user = await client.get_users(userf)
-    except:
-        await pablo.edit(engine.get_string("USER_MISSING").format("User Doesn't Exists In This Chat !"))
+    except BaseException as e:
+        await pablo.edit(engine.get_string("USER_MISSING").format(e))
         return
     userz = user.id
     if userz == me_m.id:
@@ -562,7 +562,7 @@ async def purge(client, message):
             await event.edit(engine.get_string("NOT_ADMIN"))
             return
     if not message.reply_to_message:
-        await event.edit(engine.get_string("NEEDS_REPLY").format("a message to purge"))
+        await event.edit(engine.get_string("NEEDS_REPLY").format("Message To Purge."))
         return
     async for msg in client.iter_history(
         chat_id=message.chat.id,
