@@ -884,12 +884,10 @@ async def slogo(client, message):
 )
 async def adityalogo(client, message):
     engine = message.Engine
-    event = await edit_or_reply(message, "`Processing.....`")
+    event = await edit_or_reply(message, engine.get_string("PROCESSING"))
     text = get_text(message)
     if not text:
-        await event.edit(
-            "`Please Give Me A Valid Input. You Can Check Help Menu To Know More!`"
-        )
+        await event.edit(engine.get_string("INPUT_REQ").format("Text For Logo"))
         return
     img = Image.open("./bot_utils_files/image_templates/black_blank_image.jpg")
     draw = ImageDraw.Draw(img)
@@ -932,10 +930,10 @@ async def adityalogo(client, message):
 )
 async def ujwal_s_ticker(client, message):
     engine = message.Engine
-    msg_ = await edit_or_reply(message, "`Processing.....`")
+    msg_ = await edit_or_reply(message, engine.get_string("PROCESSING"))
     text = get_text(message)
     if not text:
-        msg_.edit("`Give Me Text As Input!`")
+        msg_.edit(engine.get_string("INPUT_REQ").format("Text For Sticker"))
         return
     sticktext = textwrap.wrap(text, width=10)
     sticktext = "\n".join(sticktext)
