@@ -52,6 +52,7 @@ auth_url = r["auth_url"]
     },
 )
 async def hwn(client, message):
+    engine = message.Engine
     pablo = await edit_or_reply(message, "`Processing...`")
     if not message.reply_to_message:
         await pablo.edit("`Reply To Notes / Document To Enhance It!`")
@@ -81,6 +82,7 @@ async def hwn(client, message):
     },
 )
 async def glitchtgi(client, message):
+    engine = message.Engine
     pablo = await edit_or_reply(message, "`Processing...`")
     if not message.reply_to_message:
         await pablo.edit("Please Reply To Image For Glitching")
@@ -121,6 +123,7 @@ async def glitchtgi(client, message):
     },
 )
 async def momify(client, message):
+    engine = message.Engine
     owo = await edit_or_reply(message, "`Making Memes! Look There, OwO`")
     img = await convert_to_image(message, client)
     hmm = get_text(message)
@@ -166,6 +169,7 @@ async def momify(client, message):
     },
 )
 async def flips(client, message):
+    engine = message.Engine
     owo = await edit_or_reply(message, "`OwO, Flipping...`")
     img = await convert_to_image(message, client)
     if not img:
@@ -199,6 +203,7 @@ async def flips(client, message):
     },
 )
 async def c_imagenote(client, message):
+    engine = message.Engine
     owo = await edit_or_reply(message, "`OwO, Cropping.`")
     img = await convert_to_image(message, client)
     if not img:
@@ -233,6 +238,7 @@ async def c_imagenote(client, message):
     },
 )
 async def mirrorlol(client, message):
+    engine = message.Engine
     owo = await edit_or_reply(message, "`OwO, Let me go near Mirror...`")
     img = await convert_to_image(message, client)
     if not img:
@@ -267,6 +273,7 @@ async def mirrorlol(client, message):
     },
 )
 async def oohno(client, message):
+    engine = message.Engine
     owo = await edit_or_reply(message, "`OwO, Scarrry Ghosssst`")
     img = await convert_to_image(message, client)
     if not img:
@@ -302,6 +309,7 @@ async def oohno(client, message):
     },
 )
 async def nice(client, message):
+    engine = message.Engine
     owo = await edit_or_reply(message, "`OwO, Let Me Draw.`")
     img = await convert_to_image(message, client)
     if not img:
@@ -350,6 +358,7 @@ def dodgeV2(image, mask):
     },
 )
 async def getfakecertificate(client, message):
+    engine = message.Engine
     pablo = await edit_or_reply(message, "`Processing.....`")
     text = get_text(message)
     if not text:
@@ -391,6 +400,7 @@ async def getfakecertificate(client, message):
     },
 )
 async def weallarethugs(client, message):
+    engine = message.Engine
     tgi = await edit_or_reply(message, "`Using My Thug Algo To Make Him Thug!`")
     img = await convert_to_image(message, client)
     if not img:
@@ -436,6 +446,7 @@ async def weallarethugs(client, message):
     },
 )
 async def toonize(client, message):
+    engine = message.Engine
     tgi = await edit_or_reply(message, "`Using My Toonize Algo To Make Him A Cartoon!`")
     img = await convert_to_image(message, client)
     if not img:
@@ -470,6 +481,7 @@ async def toonize(client, message):
     },
 )
 async def wewnews(client, message):
+    engine = message.Engine
     pablo = await edit_or_reply(message, "`Processing.....`")
     text = get_text(message)
     if not text:
@@ -518,6 +530,7 @@ async def wewnews(client, message):
     },
 )
 async def color_magic(client, message):
+    engine = message.Engine
     owo = await edit_or_reply(message, "`Using My Color Magic To Color This, OwO!`")
     img = await convert_to_image(message, client)
     if not img:
@@ -574,6 +587,7 @@ async def color_magic(client, message):
     },
 )
 async def spin(client, message):
+    engine = message.Engine
     pablo = await edit_or_reply(message, "`Processing.....`")
     lolshit = get_text(message)
     if not lolshit:
@@ -639,6 +653,7 @@ async def spin(client, message):
     },
 )
 async def ph(client, message):
+    engine = message.Engine
     pablo = await edit_or_reply(message, "`Processing.....`")
     Hell = get_text(message)
     if not Hell:
@@ -684,6 +699,7 @@ async def ph(client, message):
     },
 )
 async def fgs(client, message):
+    engine = message.Engine
     pablo = await edit_or_reply(message, "`Processing.....`")
     Hell = get_text(message)
     if not Hell:
@@ -731,6 +747,7 @@ async def fgs(client, message):
     },
 )
 async def jail(client, message):
+    engine = message.Engine
     pablo = await edit_or_reply(message, "`Processing.....`")
     Hell = get_text(message)
     if not Hell and not message.reply_to_message:
@@ -785,6 +802,7 @@ async def jail(client, message):
     cmd_help={"help": "Generates Fake Image!", "example": "{ch}picgen"},
 )
 async def picgen(client, message):
+    engine = message.Engine
     pablo = await edit_or_reply(message, "`Processing.....`")
     url = "https://thispersondoesnotexist.com/image"
     response = requests.get(url)
@@ -815,6 +833,7 @@ async def picgen(client, message):
     },
 )
 async def slogo(client, message):
+    engine = message.Engine
     event = await edit_or_reply(message, "`Processing.....`")
     text = get_text(message)
     if not text:
@@ -868,6 +887,7 @@ async def slogo(client, message):
     },
 )
 async def adityalogo(client, message):
+    engine = message.Engine
     event = await edit_or_reply(message, "`Processing.....`")
     text = get_text(message)
     if not text:
@@ -915,6 +935,7 @@ async def adityalogo(client, message):
     },
 )
 async def ujwal_s_ticker(client, message):
+    engine = message.Engine
     msg_ = await edit_or_reply(message, "`Processing.....`")
     text = get_text(message)
     if not text:
