@@ -35,7 +35,7 @@ async def notes(client, message):
     msg = message.reply_to_message
     copied_msg = await msg.copy(int(Config.LOG_GRP))
     await add_note(note_name, message.chat.id, copied_msg.message_id)
-    await note_.edit(f"`Done! {note_name} Added To Notes List!`")
+    await note_.edit(engine.get_string("FILTER_5").format(note_name, "Note"))
 
 
 @listen(filters.incoming & filters.regex("\#(\S+)"))
@@ -72,7 +72,7 @@ async def notes(client, message):
         return
     note_name = note_name.lower()
     if not await note_info(note_name, message.chat.id):
-        await note_.edit("`Note Not Found!`")
+        await note_.edit(engine.get_string("FILTER_1").format("NOTE", note_name))
         return
     await del_note(note_name, message.chat.id)
     await note_.edit(engine.get_string("NOT_ADDED").format(note_name))
@@ -87,10 +87,10 @@ async def noteses(client, message):
     pablo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     poppy = await all_note(message.chat.id)
     if poppy is False:
-        await pablo.edit("`No Notes Found In This Chat...`")
+        await pablo.edit(engine.get_string("FILTER_3").format("Notes"))
         return
     await del_notes(message.chat.id)
-    await pablo.edit("Deleted All The Notes Successfully!!")
+    await pablo.edit(engine.get_string("REMOVED_ALL").format("Notes"))
 
 
 @friday_on_cmd(
@@ -102,14 +102,14 @@ async def noteses(client, message):
     pablo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     poppy = await all_note(message.chat.id)
     if poppy is False:
-        await pablo.edit("`No Notes Found In This Chat...`")
+        await pablo.edit(engine.get_string("FILTER_3").format("Notes"))
         return
     kk = ""
     for Escobar in poppy:
         kk += f"""\n~ `{Escobar.get("keyword")}`"""
     X = await client.get_chat(message.chat.id)
     grp_nme = X.title
-    mag = engine.get_string("LIST_OF").format("Notes", grp_nme,kk)) +"""
+    mag = engine.get_string("LIST_OF").format("Notes", grp_nme,kk)) + """
 
 Get Notes With `#NoteName`"""
     await pablo.edit(mag)
