@@ -1,5 +1,5 @@
 language: "en"
-written_by: [Midhun KM, Chsaiujwal, Aditya, LoneWolf_08]
+written_by: [Chsaiujwal, Aditya, LoneWolf_08]
 
 AFK_1: "**My Master Seems To Be Too Busy 👀.** \n__He Going Afk Because Of__ `{}`"
 NEEDS_REPLY: "**400_REPLY_TO_MESSAGE :** `Please Reply To {}.`"
@@ -202,3 +202,6 @@ BASH_OUT: "**▶ CMD :**
 `{}`
 "
 EVAL: "**▶ Code :** \n`{}` \n\n**▶ Output / TraceBack :** \n`{}`"
+NEEDS_C_INPUT: "`Invalid Input Given. Please Check Help Menu To Know More.`"
+UNSUPPORTED: "`Unsupported Input, Expected : {}`"
+TOO_BIG: "`Telegram Message Limit Exceeded, So The Out Put Has Been Paste To` [DogBin]({})"
