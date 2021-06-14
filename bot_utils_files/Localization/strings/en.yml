@@ -122,7 +122,7 @@ STATS: "`Your Stats Obtained in {} seconds`
 `Bots = {}`"
 REPLY_TO_STICKER: "`Please Reply To Sticker...`"
 KANG_MAGIC_: "`Using Megic To Kang This Sticker...`"
-KANG_FULL": "Kang Pack Vol __{}__ is Full! Switching To Vol __{}__ Kang Pack"
+KANG_FULL: "Kang Pack Vol __{}__ is Full! Switching To Vol __{}__ Kang Pack"
 ADDED_STICKER: "Sticker Added To Your Pack With Emoji - {}. You Can Find It [Here](https://t.me/addstickers/{})"
 TELEGRAPH_UP_FAILED: "__Unable To Telegraph!__ \n**TraceBack :** `{}`"
 TELEGRAPH: "Uploaded To Telegraph! \nLink : https://telegra.ph/{}"
