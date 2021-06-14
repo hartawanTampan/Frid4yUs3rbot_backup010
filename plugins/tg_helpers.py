@@ -27,19 +27,19 @@ async def bleck_name(client, message):
     owo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     new_firstname = get_text(message)
     if not new_firstname:
-        await owo.edit("`Give A Input :/`")
+        await owo.edit(engine.get_string("INPUT_REQ").format("Firstname"))
         return
     if len(new_firstname) > 64:
-        await owo.edit("`Bruh, TG Will Not Allow That :(`")
+        await owo.edit(engine.get_string("NEEDS_C_INPUT"))
         return
     try:
         await client.update_profile(first_name=new_firstname)
     except BaseException as e:
         await owo.edit(
-            f"`[Failed] - Unable To Update Firstname` \n**TraceBack :** `{e}`"
+            engine.get_string("FIRST_NAME_CHANGE_FAILED").format("FirstName", e)
         )
         return
-    await owo.edit(f"`Firstname Sucessfully Changed To {new_firstname} !`")
+    await owo.edit(engine.get_string("FIRST_NAME_CHANGED").format("FirstName", new_firstname))
 
 
 @friday_on_cmd(
@@ -51,17 +51,17 @@ async def bleck_bio(client, message):
     owo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     new_bio = get_text(message)
     if not new_bio:
-        await owo.edit("`Give A Input :/`")
+        await owo.edit(engine.get_string("INPUT_REQ").format("Bio"))
         return
     if len(new_bio) > 70:
-        await owo.edit("`Bruh, TG Will Not Allow That :(`")
+        await owo.edit(engine.get_string("NEEDS_C_INPUT"))
         return
     try:
         await client.update_profile(bio=new_bio)
     except BaseException as e:
-        await owo.edit(f"`[Failed] - Unable To Update Bio` \n**TraceBack :** `{e}`")
+        await owo.edit(engine.get_string("FIRST_NAME_CHANGE_FAILED").format("Bio", e))
         return
-    await owo.edit(f"`Bio Sucessfully Changed To {new_bio} !`")
+    await owo.edit(engine.get_string("FIRST_NAME_CHANGED").format("Bio", new_bio))
 
 
 @friday_on_cmd(
@@ -76,16 +76,16 @@ async def bleck_username(client, message):
     owo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     new_username = get_text(message)
     if not new_username:
-        await owo.edit("`Give A Input :/`")
+        await owo.edit(engine.get_string("INPUT_REQ").format("Username"))
         return
     try:
         await client.update_username(new_username)
     except BaseException as e:
         await owo.edit(
-            f"`[Failed] - Unable To Update Username` \n**TraceBack :** `{e}`"
+            engine.get_string("FIRST_NAME_CHANGE_FAILED").format("Username", e)
         )
         return
-    await owo.edit(f"`Username Sucessfully Changed To {new_username} !`")
+    await owo.edit(engine.get_string("FIRST_NAME_CHANGED").format("Username", new_username))
 
 
 @friday_on_cmd(
@@ -100,20 +100,21 @@ async def bleck_name(client, message):
     owo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     new_lastname = get_text(message)
     if not new_lastname:
-        await owo.edit("`Give A Input :/`")
+        await owo.edit(engine.get_string("INPUT_REQ").format("Last Name"))
         return
     if len(new_lastname) > 64:
-        await owo.edit("`Bruh, TG Will Not Allow That :(`")
+        await owo.edit(engine.get_string("NEEDS_C_INPUT"))
         return
     try:
         await client.update_profile(last_name=new_lastname)
     except BaseException as e:
         await owo.edit(
-            f"`[Failed] - Unable To Update Lastname` \n**TraceBack :** `{e}`"
+            engine.get_string("FIRST_NAME_CHANGE_FAILED").format("LastName", e)
         )
         return
-    await owo.edit(f"`Lastname Sucessfully Changed To {new_lastname} !`")
-
+    await owo.edit(engine.get_string("FIRST_NAME_CHANGED").format("LastName", new_lastname))
+    
+    
 @friday_on_cmd(
     ["join"],
     cmd_help={
@@ -126,16 +127,16 @@ async def join_(client, message):
     owo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     input_ = get_text(message)
     if not input_:
-        await owo.edit("`Give A Input :/`")
+        await owo.edit(engine.get_string("INPUT_REQ").format("Chat ID"))
         return
     try:
         await client.join_chat(input_)
     except BaseException as e:
         await owo.edit(
-            f"`[Failed] - To Join Chat` \n**TraceBack :** `{e}`"
+            engine.get_string("FAILED_TO_JOIN").format(e)
         )
         return
-    await owo.edit(f"`Sucessfully, Joined This Chat.`")
+    await owo.edit(engine.get_string("JOINED"))
 
 @friday_on_cmd(
     ["leave"],
@@ -162,14 +163,14 @@ async def bleck_pic(client, message):
     engine = message.Engine
     owo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     if not message.reply_to_message:
-        await owo.edit("`Reply To Image / Video To Set As PPic`")
+        await owo.edit(engine.get_string("NEEDS_REPLY").format("Video / Pic"))
         return
     if not (
         message.reply_to_message.video
         or message.reply_to_message.animation
         or message.reply_to_message.photo
     ):
-        await owo.edit("`Reply To Image / Video To Set As PPic`")
+        await owo.edit(engine.get_string("NEEDS_REPLY").format("Video / Pic"))
         return
     is_video = False
     if message.reply_to_message.video or message.reply_to_message.animation:
@@ -181,9 +182,9 @@ async def bleck_pic(client, message):
         else:
             await client.set_profile_photo(photo=ppics)
     except BaseException as e:
-        await owo.edit(f"`[Failed] - Unable To Update PPic` \n**TraceBack :** `{e}`")
+        await owo.edit(engine.get_string("UPDATE_PIC").format(e))
         return
-    await owo.edit("`Sucessfully, Updated Profile Pic!`")
+    await owo.edit(engine.get_string("PIC_DONE"))
 
 
 @friday_on_cmd(
