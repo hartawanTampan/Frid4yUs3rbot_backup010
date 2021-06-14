@@ -42,17 +42,17 @@ from main_startup.helper_func.logger_s import LogIt
 )
 async def addblacklist(client, message):
     engine = message.Engine
-    pablo = await edit_or_reply(message, engine.get_string("PROCESSING"))
+    messag_e_ = await edit_or_reply(message, engine.get_string("PROCESSING"))
     blacklist = get_text(message)
     if not blacklist:
-        await pablo.edit(engine.get_string("INPUT_REQ").format("KeyWord"))
+        await messag_e_.edit(engine.get_string("INPUT_REQ").format("KeyWord"))
         return
     if await is_blacklist_in_db(int(message.chat.id), blacklist):
-        await pablo.edit(engine.get_string("BLACKLIST_1"))
+        await messag_e_.edit(engine.get_string("BLACKLIST_1"))
         return
     blacklist = blacklist.lower()
     await add_to_blacklist(blacklist, int(message.chat.id))
-    await pablo.edit(engine.get_string('BLACKLIST_2').format(blacklist))
+    await messag_e_.edit(engine.get_string('BLACKLIST_2').format(blacklist))
 
 
 @friday_on_cmd(
@@ -61,14 +61,14 @@ async def addblacklist(client, message):
 )
 async def listblacklist(client, message):
     engine = message.Engine
-    pablo = await edit_or_reply(message, engine.get_string("PROCESSING"))
+    messag_e_ = await edit_or_reply(message, engine.get_string("PROCESSING"))
     if not await get_chat_blacklist(int(message.chat.id)):
-        await pablo.edit(engine.get_string("BLACKLIST_3"))
+        await messag_e_.edit(engine.get_string("BLACKLIST_3"))
         return
     OUT_STR = engine.get_string("BLACKLIST_4")
-    for midhun in await get_chat_blacklist(int(message.chat.id)):
-        OUT_STR += f"👉 `{midhun['trigger']}` \n"
-    await edit_or_send_as_file(OUT_STR, pablo, client, "Blacklist", "blacklist")
+    for trigger_s_ in await get_chat_blacklist(int(message.chat.id)):
+        OUT_STR += f"👉 `{trigger_s_['trigger']}` \n"
+    await edit_or_send_as_file(OUT_STR, messag_e_, client, "Blacklist", "blacklist")
 
 
 @friday_on_cmd(
@@ -80,17 +80,17 @@ async def listblacklist(client, message):
 )
 async def delblacklist(client, message):
     engine = message.Engine
-    pablo = await edit_or_reply(message, engine.get_string("PROCESSING"))
+    messag_e_ = await edit_or_reply(message, engine.get_string("PROCESSING"))
     blacklist = get_text(message)
     if not blacklist:
-        await pablo.edit(engine.get_string("INPUT_REQ").format("KeyWord"))
+        await messag_e_.edit(engine.get_string("INPUT_REQ").format("KeyWord"))
         return
     if not await is_blacklist_in_db(int(message.chat.id), blacklist):
-        await pablo.edit(engine.get_string("BLACKLIST_5"))
+        await messag_e_.edit(engine.get_string("BLACKLIST_5"))
         return
     blacklist = blacklist.lower()
     await del_blacklist(blacklist, int(message.chat.id))
-    await pablo.edit(engine.get_string("BLACKLIST_6").format(blacklist))
+    await messag_e_.edit(engine.get_string("BLACKLIST_6").format(blacklist))
 
 
 @listen(filters.incoming & ~filters.edited & filters.group)
@@ -126,9 +126,9 @@ async def activeblack(client, message):
 )
 async def delblacklists(client, message):
     engine = message.Engine
-    pablo = await edit_or_reply(message, engine.get_string("PROCESSING"))
+    messag_e_ = await edit_or_reply(message, engine.get_string("PROCESSING"))
     if not await get_chat_blacklist(int(message.chat.id)):
-        await pablo.edit(engine.get_string("BLACKLIST_3"))
+        await messag_e_.edit(engine.get_string("BLACKLIST_3"))
         return
     await blacklists_del(int(message.chat.id))
-    await pablo.edit(engine.get_string("BLACKLIST_8"))
+    await messag_e_.edit(engine.get_string("BLACKLIST_8"))

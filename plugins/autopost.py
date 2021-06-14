@@ -30,26 +30,26 @@ from main_startup.helper_func.basic_helpers import edit_or_reply, get_text
 )
 async def autopost(client, message):
     engine = message.Engine
-    pablo = await edit_or_reply(message, engine.get_string("PROCESSING"))
+    mess_age_ = await edit_or_reply(message, engine.get_string("PROCESSING"))
     chnnl = get_text(message)
     if not chnnl:
-        await pablo.edit(engine.get_string("INPUT_REQ").format("Chat ID"))
+        await mess_age_.edit(engine.get_string("INPUT_REQ").format("Chat ID"))
         return
     try: 
-        kk = int(chnnl)
+        channel_str = int(chnnl)
     except ValueError:
-        kk = str(chnnl)
+        channel_str = str(chnnl)
     try:
-        u_ = await client.get_chat(kk)
+        u_ = await client.get_chat(channel_str)
     except:
-        await pablo.edit(engine.get_string("INVALID_CHAT_ID"))
+        await mess_age_.edit(engine.get_string("INVALID_CHAT_ID"))
         return
-    kk = int(u_.id)
-    if await check_if_autopost_in_db(int(message.chat.id), kk):
-        await pablo.edit(engine.get_string("CHAT_ALREADY_IN_DB"))
+    channel_str = int(u_.id)
+    if await check_if_autopost_in_db(int(message.chat.id), channel_str):
+        await mess_age_.edit(engine.get_string("CHAT_ALREADY_IN_DB"))
         return
-    await add_new_autopost(int(message.chat.id), kk)
-    await pablo.edit(engine.get_string("AUTOPOSTING_1").format(chnnl))
+    await add_new_autopost(int(message.chat.id), channel_str)
+    await mess_age_.edit(engine.get_string("AUTOPOSTING_1").format(chnnl))
 
 
 @friday_on_cmd(
@@ -62,26 +62,26 @@ async def autopost(client, message):
 )
 async def rmautopost(client, message):
     engine = message.Engine
-    pablo = await edit_or_reply(message, "`Processing..`")
+    mess_age_ = await edit_or_reply(message, engine.get_string("PROCESSING"))
     chnnl = get_text(message)
     if not chnnl:
-        await pablo.edit(engine.get_string("INPUT_REQ").format("Chat ID"))
+        await mess_age_.edit(engine.get_string("INPUT_REQ").format("Chat ID"))
         return
     try:
-        kk = int(chnnl)
+        channel_str = int(chnnl)
     except ValueError:
-        kk = str(chnnl)
+        channel_str = str(chnnl)
     try:
-        u_ = await client.get_chat(kk)
+        u_ = await client.get_chat(channel_str)
     except:
-        await pablo.edit(engine.get_string("INVALID_CHAT_ID"))
+        await mess_age_.edit(engine.get_string("INVALID_CHAT_ID"))
         return
-    kk = int(u_.id)
-    if not await check_if_autopost_in_db(int(message.chat.id), kk):
-        await pablo.edit(engine.get_string("CHAT_NOT_IN_DB"))
+    channel_str = int(u_.id)
+    if not await check_if_autopost_in_db(int(message.chat.id), channel_str):
+        await mess_age_.edit(engine.get_string("CHAT_NOT_IN_DB"))
         return
-    await del_autopost(int(message.chat.id), kk)
-    await pablo.edit(engine.get_string("AUTOPOSTING_2").format(chnnl))
+    await del_autopost(int(message.chat.id), channel_str)
+    await mess_age_.edit(engine.get_string("AUTOPOSTING_2").format(chnnl))
 
 
 @listen(
