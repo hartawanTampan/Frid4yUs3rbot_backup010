@@ -53,16 +53,16 @@ auth_url = r["auth_url"]
 )
 async def hwn(client, message):
     engine = message.Engine
-    pablo = await edit_or_reply(message, "`Processing...`")
+    pablo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     if not message.reply_to_message:
-        await pablo.edit("`Reply To Notes / Document To Enhance It!`")
+        await pablo.edit(engine.get_string("NEEDS_REPLY").format("Notes / Document To Enhance It!"))
         return
     cool = await convert_to_image(message, client)
     if not cool:
-        await pablo.edit("`Reply to a valid media first.`")
+        await pablo.edit(engine.get_string("NEEDS_REPLY").format("a valid media first"))
         return
     if not os.path.exists(cool):
-        await pablo.edit("`Invalid Media!`")
+        await pablo.edit(engine.get_string("INVALID_MEDIA"))
         return
     ns = NoteShrinker([cool])
     shrunk = ns.shrink()
@@ -83,7 +83,7 @@ async def hwn(client, message):
 )
 async def glitchtgi(client, message):
     engine = message.Engine
-    pablo = await edit_or_reply(message, "`Processing...`")
+    pablo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     if not message.reply_to_message:
         await pablo.edit("Please Reply To Image For Glitching")
         return
