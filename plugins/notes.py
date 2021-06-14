@@ -23,13 +23,13 @@ from main_startup.helper_func.basic_helpers import edit_or_reply, get_text
 )
 async def notes(client, message):
     engine = message.Engine
-    note_ = await edit_or_reply(message, "`Processing..`")
+    note_ = await edit_or_reply(message, engine.get_string("PROCESSING"))
     note_name = get_text(message)
     if not note_name:
-        await note_.edit("`Give A Note Name!`")
+        await note_.edit(engine.get_string("INPUT_REQ").format("Note Name"))
         return
     if not message.reply_to_message:
-        await note_.edit("Reply To Message To Save As Note!")
+        await note_.edit(engine.get_string("REPLY_MSG"))
         return
     note_name = note_name.lower()
     msg = message.reply_to_message
@@ -65,17 +65,17 @@ async def lmao(client, message):
 )
 async def notes(client, message):
     engine = message.Engine
-    note_ = await edit_or_reply(message, "`Processing..`")
+    note_ = await edit_or_reply(message, engine.get_string("PROCESSING"))
     note_name = get_text(message)
     if not note_name:
-        await note_.edit("`Give A Note Name!`")
+        await note_.edit(engine.get_string("INPUT_REQ").format("Note Name"))
         return
     note_name = note_name.lower()
     if not await note_info(note_name, message.chat.id):
         await note_.edit("`Note Not Found!`")
         return
     await del_note(note_name, message.chat.id)
-    await note_.edit(f"`Note {note_name} Deleted Successfully!`")
+    await note_.edit(engine.get_string("NOT_ADDED").format(note_name))
 
 
 @friday_on_cmd(
@@ -84,7 +84,7 @@ async def notes(client, message):
 )
 async def noteses(client, message):
     engine = message.Engine
-    pablo = await edit_or_reply(message, "`Processing..`")
+    pablo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     poppy = await all_note(message.chat.id)
     if poppy is False:
         await pablo.edit("`No Notes Found In This Chat...`")
@@ -99,7 +99,7 @@ async def noteses(client, message):
 )
 async def noteses(client, message):
     engine = message.Engine
-    pablo = await edit_or_reply(message, "`Processing..`")
+    pablo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     poppy = await all_note(message.chat.id)
     if poppy is False:
         await pablo.edit("`No Notes Found In This Chat...`")
@@ -109,8 +109,7 @@ async def noteses(client, message):
         kk += f"""\n~ `{Escobar.get("keyword")}`"""
     X = await client.get_chat(message.chat.id)
     grp_nme = X.title
-    mag = f""" List Of Notes In {grp_nme}:
-{kk}
+    mag = engine.get_string("LIST_OF").format("Notes", grp_nme,kk)) +"""
 
 Get Notes With `#NoteName`"""
     await pablo.edit(mag)
