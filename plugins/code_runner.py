@@ -21,8 +21,6 @@ from main_startup.helper_func.basic_helpers import (
     get_text,
 )
 
-
-
 @friday_on_cmd(
     cmd=["exec", "eval"],
     ignore_errors=True,
@@ -74,46 +72,6 @@ async def aexec(code, client, message):
         + "".join(f"\n {l}" for l in code.split("\n"))
     )
     return await locals()["__aexec"](client, message)
-
-
-@friday_on_cmd(
-    cmd=["rc", "run"],
-    cmd_help={
-        "help": "Reply To Any Programming Language's Code To Eval In Telegram!",
-        "example": "{ch}run python print('FridayUserBot')",
-    },
-)
-async def any_lang_cmd_runner(client, message):
-    engine = message.Engine
-    stark = await edit_or_reply(message, engine.get_string("PROCESSING"))
-    if len(message.text.split()) == 1:
-        await stark.edit(engine.get_string("INPUT_REQ").format("Language Code"))
-        return
-    if not message.reply_to_message:
-        await stark.edit(engine.get_string("NEEDS_REPLY").format("Code"))
-        return
-    reply_code = message.reply_to_message.text
-    lang = message.text.split(None, 1)[1]
-    if not lang.lower() in langs:
-        await stark.edit(engine.get_string("INVALID_RC_LANG"))
-        return
-    if reply_code is None:
-        await stark.edit(engine.get_string("REPLY_CODE"))
-        return
-    data = {
-        "code": reply_code,
-        "lang": lang,
-        "token": "5b5f0ad8-705a-4118-87d4-c0ca29939aed",
-    }
-    r = requests.post("https://starkapis.herokuapp.com/compiler", data=data).json()
-    if r.get("reason") != None:
-        iujwal = engine.get_string("RC_OUTPUT_R").format(reply_code, r.get("results"), r.get("errors"), r.get("stats"), r.get("success"), r.get("warnings"), r.get("reason") )
-    else:
-        engine.get_string("RC_OUTPUT").format(reply_code, r.get("results"), r.get("errors"), r.get("stats"), r.get("success"), r.get("warnings") )
-    await edit_or_send_as_file(
-        iujwal, stark, client, "`Result of Your Code!`", "rc-result"
-    )
-
 
 @friday_on_cmd(
     cmd=["bash", "terminal"],
