@@ -23,7 +23,8 @@ from main_startup.helper_func.basic_helpers import (
     },
 )
 async def bleck_name(client, message):
-    owo = await edit_or_reply(message, "`Updating FirstName!`")
+    engine = message.Engine
+    owo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     new_firstname = get_text(message)
     if not new_firstname:
         await owo.edit("`Give A Input :/`")
@@ -46,7 +47,8 @@ async def bleck_name(client, message):
     cmd_help={"help": "Change Your Account Bio!", "example": "{ch}bio (new bio)"},
 )
 async def bleck_bio(client, message):
-    owo = await edit_or_reply(message, "`Updating Bio!`")
+    engine = message.Engine
+    owo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     new_bio = get_text(message)
     if not new_bio:
         await owo.edit("`Give A Input :/`")
@@ -70,7 +72,8 @@ async def bleck_bio(client, message):
     },
 )
 async def bleck_username(client, message):
-    owo = await edit_or_reply(message, "`Updating Username!`")
+    engine = message.Engine
+    owo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     new_username = get_text(message)
     if not new_username:
         await owo.edit("`Give A Input :/`")
@@ -93,7 +96,8 @@ async def bleck_username(client, message):
     },
 )
 async def bleck_name(client, message):
-    owo = await edit_or_reply(message, "`Updating LastName!`")
+    engine = message.Engine
+    owo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     new_lastname = get_text(message)
     if not new_lastname:
         await owo.edit("`Give A Input :/`")
@@ -118,7 +122,8 @@ async def bleck_name(client, message):
     },
 )
 async def join_(client, message):
-    owo = await edit_or_reply(message, "`Joining Chat...`")
+    engine = message.Engine
+    owo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     input_ = get_text(message)
     if not input_:
         await owo.edit("`Give A Input :/`")
@@ -141,6 +146,7 @@ async def join_(client, message):
     },
 )
 async def leave_(client, message):
+    engine = message.Engine
     await edit_or_reply(message, "`GOODBYECRUELGROUP - *leaves*`")
     await client.leave_chat(message.chat.id)
 
@@ -153,7 +159,8 @@ async def leave_(client, message):
     },
 )
 async def bleck_pic(client, message):
-    owo = await edit_or_reply(message, "`Updating PPic!`")
+    engine = message.Engine
+    owo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     if not message.reply_to_message:
         await owo.edit("`Reply To Image / Video To Set As PPic`")
         return
@@ -188,17 +195,18 @@ async def bleck_pic(client, message):
     },
 )
 async def create_poll(client, message):
-    msg = await edit_or_reply(message, "`Creating Poll!`")
+    engine = message.Engine
+    msg = await edit_or_reply(message, engine.get_string("PROCESSING"))
     poll_ = get_text(message)
     if not poll_:
-        await msg.edit("`Give Me Question & Options! See Help For More`")
+        await msg.edit(engine.get_string("REQ_POLL"))
         return
     if not "|" in poll_:
-        await msg.edit("`Give Me Options :/`")
+        await msg.edit(engine.get_string("A_POLL_NEEDS"))
         return
     poll_q, poll_options = poll_.split("|")
     if not "," in poll_options:
-        await msg.edit("`A Poll Needs 1+ Options!`")
+        await msg.edit(engine.get_string("A_POLL_NEEDS"))
         return
     option_s = poll_options.split(",")
     await client.send_poll(message.chat.id, question=poll_q, options=option_s)
@@ -213,7 +221,8 @@ async def create_poll(client, message):
     },
 )
 async def dumb_er(client, message):
-    ow = await edit_or_reply(message, "`Dumping...`")
+    engine = message.Engine
+    ow = await edit_or_reply(message, engine.get_string("PROCESSING"))
     if message.reply_to_message:
         m_sg = message.reply_to_message
     else:
@@ -230,14 +239,15 @@ async def dumb_er(client, message):
     },
 )
 async def pur_ge_me(client, message):
-    nice_p = await edit_or_reply(message, "`Processing...`")
+    engine = message.Engine
+    nice_p = await edit_or_reply(message, engine.get_string("PROCESSING"))
     msg_ids = []
     to_purge = get_text(message)
     if not to_purge:
-        nice_p.edit("`Give No Of Message To Purge :/`")
+        nice_p.edit(engine.get_string("TO_PURGE"))
         return
     if not to_purge.isdigit():
-        nice_p.edit("`Give No Of Message To Purge :/`")
+        nice_p.edit(engine.get_string("TO_PURGE"))
         return
     async for msg in client.search_messages(
         message.chat.id, query="", limit=int(to_purge), from_user="me"
@@ -253,7 +263,7 @@ async def pur_ge_me(client, message):
         await client.delete_messages(
             chat_id=message.chat.id, message_ids=msg_ids, revoke=True
         )
-    await nice_p.edit(f"`Purged {to_purge} Messages!`")
+    await nice_p.edit(PURGED_MY_MSG.format(to_purge))
 
 
 @friday_on_cmd(
@@ -264,7 +274,8 @@ async def pur_ge_me(client, message):
     },
 )
 async def add_user_s_to_group(client, message):
-    mg = await edit_or_reply(message, "`Adding Users!`")
+    engine = message.Engine
+    mg = await edit_or_reply(message, engine.get_string("PROCESSING"))
     user_s_to_add = get_text(message)
     if not user_s_to_add:
         await mg.edit("`Give Me Users To Add! Check Help Menu For More Info!`")
@@ -273,9 +284,9 @@ async def add_user_s_to_group(client, message):
     try:
         await client.add_chat_members(message.chat.id, user_list, forward_limit=100)
     except BaseException as e:
-        await mg.edit(f"`Unable To Add Users! \nTraceBack : {e}`")
+        await mg.edit(engine.get_string("UNABLE_TO_ADD_USER").format(e))
         return
-    await mg.edit(f"`Sucessfully Added {len(user_list)} To This Group / Channel!`")
+    await mg.edit(engine.get_string("ADDED_USER").format(len(user_list)))
 
 
 @friday_on_cmd(
@@ -286,14 +297,15 @@ async def add_user_s_to_group(client, message):
     },
 )
 async def add_user_s_to_contact(client, message):
-    msg_ = await edit_or_reply(message, "`Please Wait!`")
+    engine = message.Engine
+    msg_ = await edit_or_reply(message, engine.get_string("PROCESSING"))
     text_ = get_text(message)
     userk = get_user(message, text_)[0]
     try:
         user_ = await client.get_users(userk)
-    except:
-        await msg_.edit(f"`404 : Unable To Get To This User!`")
+    except BaseException as e:
+        await msg_.edit(engine.get_string("USER_MISSING").format(e))
         return
     custom_name = get_text(message) or user_.first_name
     await client.add_contact(user_.id, custom_name)
-    await msg_.edit(f"`Added {user_.first_name} To Contacts!`")
+    await msg_.edit(engine.get_string("ADDED_CONTACT").format(user_.first_name))
