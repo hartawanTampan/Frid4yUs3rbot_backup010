@@ -1,7 +1,8 @@
 language: "en"
-written_by: [Midhun KM, Chsaiujwal, Aditya, LoneWolf_08]
+written_by: [Chsaiujwal, Aditya, LoneWolf_08]
 
 AFK_1: "**My Master Seems To Be Too Busy 👀.** \n__He Going Afk Because Of__ `{}`"
+NEEDS_REPLY: "**400_REPLY_TO_MESSAGE :** `Please Reply To {}.`"
 AFK_2: "#AfkLogger Afk Is Active And Reason is {}"
 AFK_3: "**I Am Busy And I Am Going Afk**."
 AFK_4: "__Pro is Back Alive__\n**No Longer afk.**\n `I Was afk for: {}`"
@@ -121,7 +122,7 @@ STATS: "`Your Stats Obtained in {} seconds`
 `Bots = {}`"
 REPLY_TO_STICKER: "`Please Reply To Sticker...`"
 KANG_MAGIC_: "`Using Megic To Kang This Sticker...`"
-KANG_FULL": "Kang Pack Vol __{}__ is Full! Switching To Vol __{}__ Kang Pack"
+KANG_FULL: "Kang Pack Vol __{}__ is Full! Switching To Vol __{}__ Kang Pack"
 ADDED_STICKER: "Sticker Added To Your Pack With Emoji - {}. You Can Find It [Here](https://t.me/addstickers/{})"
 TELEGRAPH_UP_FAILED: "__Unable To Telegraph!__ \n**TraceBack :** `{}`"
 TELEGRAPH: "Uploaded To Telegraph! \nLink : https://telegra.ph/{}"
@@ -149,13 +150,73 @@ UPDATER_ERROR: "**Updater Error** \nTraceBack : `{}`"
 REPLY_TO_WELCOME: "`Reply To Message To Save As Welcome Message!`"
 WELCOME_SAVED: "`Done! Welcome Message Saved!`"
 YANDEX: "<b>Reverse Search Conpleted!</b>
+
 Reverse Searched Link:- {}
-Note:- Yandex is a Russian search engine, so better open link in chrome with auto-translate.
-Another Note:- Don't Use This Command continually, Yandex Will Block Your Request.
-<u><b>Reverse Search Completed By Friday.
-Get Your Own Friday From @FRIDAYCHAT.</b></u>
+
+> <code>Yandex is a Russian search engine, so better open link in chrome with auto-translate.</code>
 "
 IMG_NOT_FOUND: "Image Not Found In {}"
 REVERSING: "`Hmm... Reverse Searching The Image On {}...🚶`"
 LOOKING_FOR_IMG: "[{}]({})\n\n`Looking for this Image...`"
 PROCESS_FAILED: "`Failed To Get Results. Google Doesn't Seem Happy With Me."
+INVALID_RC_LANG: "`Invalid Language Selected!`"
+RC_OUTPUT_R: "**▶ Code :** \n`{}` 
+**▶ Result :** 
+`{}`
+**▶ Error :** 
+`{}`
+**▶ Stats :**
+ `{}`
+**▶ Success :** 
+ `{}`
+**▶ Warnings :** 
+ `{}`
+**▶ Reason :**
+ `{}`
+"
+RC_OUTPUT: "**▶ Code :** \n`{}` 
+**▶ Result :** 
+`{}`
+**▶ Error :** 
+`{}`
+**▶ Stats :**
+ `{}`
+**▶ Success :** 
+ `{}`
+**▶ Warnings :** 
+ `{}`
+"
+BASH_OUT: "**▶ CMD :**
+`{}`
+
+**▶ PID :**
+`{}`
+
+**▶ Error TraceBack (If Any) :**
+`{}`
+
+**▶ Output / Result (If Any) :**
+`{}`
+
+**▶ Return Code :** 
+`{}`
+"
+EVAL: "**▶ Code :** \n`{}` \n\n**▶ Output / TraceBack :** \n`{}`"
+NEEDS_C_INPUT: "`Invalid Input Given. Please Check Help Menu To Know More.`"
+UNSUPPORTED: "`Unsupported Input, Expected : {}`"
+TOO_BIG: "`Telegram Message Limit Exceeded, So The Out Put Has Been Paste To` [DogBin]({})"
+YTDL_FAILED: "**Youtube Download Failed!** \n**Error :** `{}`"
+NO_RESULTS: "`No Results Found For {}, Perhaps, You Can Be More Specific.`"
+GETTING_RESULTS: "`Searching Results Matching For {}. Please Wait.`"
+ALIVE_: "
+**{}'s Friday-UserBot is Alive!**
+
+➔ **Version :** __{}__
+➔ **Uptime :** __{}__
+➔ **PyroGram Version :** __{}__
+➔ **Python Version :** __{}__
+➔ **OS :** __{}__
+➔ **CPU :** __{}__
+➔ **DISK USAGE :** __{}__
+"
+RESTART: "`🔄 Restarting.. 🔄`"

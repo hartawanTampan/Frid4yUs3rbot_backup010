@@ -14,210 +14,125 @@ import wget
 from youtube_dl import YoutubeDL
 from youtubesearchpython import SearchVideos
 from main_startup.core.decorators import friday_on_cmd
-from main_startup.helper_func.basic_helpers import edit_or_reply, get_text, progress, humanbytes
+from main_startup.helper_func.basic_helpers import edit_or_reply, get_text, progress, humanbytes, run_in_exc, time_formatter
+import threading
+from concurrent.futures import ThreadPoolExecutor
+from pyrogram.errors import FloodWait, MessageNotModified
+
+def edit_msg(client, message, to_edit):
+    try:
+        client.loop.create_task(message.edit(to_edit))
+    except MessageNotModified:
+        pass
+    except FloodWait as e:
+        client.loop.create_task(asyncio.sleep(e.x))
+    except TypeError:
+        pass
+    
+def download_progress_hook(d, message, client):
+    elapsed = d.get("elapsed")
+    if d['status'] == 'downloading':
+        current = d.get("_downloaded_bytes_str") or humanbytes(d.get("downloaded_bytes", 1))
+        total = d.get("_total_bytes_str") or d.get("_total_bytes_estimate_str")
+        file_name = d.get("filename")
+        eta = d.get('_eta_str', "N/A")
+        percent = d.get("_percent_str", "N/A")
+        speed = d.get("_speed_str", "N/A")
+        to_edit = f"<b><u>Downloading File</b></u> \n<b>File Name :</b> <code>{file_name}</code> \n<b>File Size :</b> <code>{total}</code> \n<b>Speed :</b> <code>{speed}</code> \n<b>ETA :</b> <code>{eta}</code> \n<i>Download {current} out of {total}</i> (__{percent}__)"
+        threading.Thread(target=edit_msg, args=(client, message, to_edit)).start()
+    elif d['status'] == 'finished':
+        to_edit = f"`[Download Completed]` in (__{time_formatter(elapsed)}__)."
+        threading.Thread(target=edit_msg, args=(client, message, to_edit)).start()
+
+@run_in_exc
+def yt_dl(url, client, message, type_):
+    opts = {
+             "format": "bestaudio" if type_ == "audio" else "best",
+             "addmetadata": True,
+             "key": "FFmpegMetadata",
+             "writethumbnail": True,
+             "prefer_ffmpeg": True,
+             "geo_bypass": True,
+             "progress_hooks": [lambda d: download_progress_hook(d, message, client)],
+             "nocheckcertificate": True,
+             "postprocessors": [
+                 {
+                     "key": "FFmpegExtractAudio",
+                     "preferredcodec": "mp3" if type_ == "audio" else "mp4"
+                 }
+             ],
+             "outtmpl": "%(id)s.mp3" if type_ == "audio" else "%(id)s.mp4",
+             "quiet": True,
+             "logtostderr": False,
+         }
+    with YoutubeDL(opts) as ytdl:
+        ytdl_data = ytdl.extract_info(url, download=True)
+    file_name = f"{ytdl_data['id']}.mp3" if type_ == "audio" else f"{ytdl_data['id']}.mp4"
+    return file_name, yt_data
 
 
 @friday_on_cmd(
-    ["utubevid", "ytv"],
+    ["yt", "ytdl"],
     cmd_help={
-        "help": "Download YouTube Videos just with name!",
-        "example": "{ch}utubevid (video name OR link)",
+        "help": "Download YouTube Videos / Audio just with name!",
+        "example": "{ch}yt (video name OR link)|audio if audio else video",
     },
 )
 async def yt_vid(client, message):
     input_str = get_text(message)
-    pablo = await edit_or_reply(message, f"`Processing...`")
+    engine = message.Engine
+    type_ = "video"
+    pablo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     if not input_str:
         await pablo.edit(
-            "`Please Give Me A Valid Input. You Can Check Help Menu To Know More!`"
+            engine.get_string("INPUT_REQ").format("Query")
         )
         return
-    await pablo.edit(f"`Getting {input_str} From Youtube Servers. Please Wait.`")
-    search = SearchVideos(str(input_str), offset=1, mode="dict", max_results=1)
-    rt = search.result()
-    result_s = rt["search_result"]
-    url = result_s[0]["link"]
-    vid_title = result_s[0]["title"]
-    yt_id = result_s[0]["id"]
-    uploade_r = result_s[0]["channel"]
-    thumb_url = f"https://img.youtube.com/vi/{yt_id}/hqdefault.jpg"
-    await asyncio.sleep(0.6)
-    downloaded_thumb = wget.download(thumb_url)
-    opts = {
-        "format": "best",
-        "addmetadata": True,
-        "key": "FFmpegMetadata",
-        "prefer_ffmpeg": True,
-        "geo_bypass": True,
-        "nocheckcertificate": True,
-        "postprocessors": [{"key": "FFmpegVideoConvertor", "preferedformat": "mp4"}],
-        "outtmpl": "%(id)s.mp4",
-        "logtostderr": False,
-        "quiet": True,
-    }
-    try:
-        with YoutubeDL(opts) as ytdl:
-            ytdl_data = ytdl.extract_info(url, download=True)
-    except Exception as e:
-        await pablo.edit(f"**Failed To Download** \n**Error :** `{str(e)}`")
-        return
-    c_time = time.time()
-    file_stark = f"{ytdl_data['id']}.mp4"
-    capy = f"**Video Name ➠** `{vid_title}` \n**Requested For ➠** `{input_str}` \n**Channel ➠** `{uploade_r}` \n**Link ➠** `{url}`"
-    await client.send_video(
-        message.chat.id,
-        video=open(file_stark, "rb"),
-        duration=int(ytdl_data["duration"]),
-        file_name=str(ytdl_data["title"]),
-        thumb=downloaded_thumb,
-        caption=capy,
-        supports_streaming=True,
-        progress=progress,
-        progress_args=(
-            pablo,
-            c_time,
-            f"`Uploading {input_str} Song From YouTube Music!`",
-            file_stark,
-        ),
-    )
-    await pablo.delete()
-    for files in (downloaded_thumb, file_stark):
-        if files and os.path.exists(files):
-            os.remove(files)
-            
-@friday_on_cmd(
-    ["ytdl"],
-    cmd_help={
-        "help": "Download All Contents Supported by youtube_dl",
-        "example": "{ch}ytdl (link)",
-    },
-)
-async def yt_dl_(client, message):
-    input_str = get_text(message)
-    pablo = await edit_or_reply(message, f"`Processing...`")
-    if not input_str:
-        await pablo.edit(
-            "`Please Give Me A Valid Input. You Can Check Help Menu To Know More!`"
-        )
-        return
-    await pablo.edit(f"`Downloading Please Wait..`")
-    url = input_str
-    opts = {
-        "format": "best",
-        "addmetadata": True,
-        "key": "FFmpegMetadata",
-        "prefer_ffmpeg": True,
-        "geo_bypass": True,
-        "nocheckcertificate": True,
-        "postprocessors": [{"key": "FFmpegVideoConvertor", "preferedformat": "mp4"}],
-        "outtmpl": "%(id)s.mp4",
-        "logtostderr": False,
-        "quiet": True,
-    }
-    try:
-        with YoutubeDL(opts) as ytdl:
-            ytdl_data = ytdl.extract_info(url, download=True)
-    except Exception as e:
-        await pablo.edit(f"**Failed To Download** \n**Error :** `{str(e)}`")
-        return
-    c_time = time.time()
-    file_stark = f"{ytdl_data['id']}.mp4"
-    size = os.stat(file_stark).st_size
-    capy = f"<< **{file_stark}** [`{humanbytes(size)}`] >>"
-    await client.send_video(
-        message.chat.id,
-        video=open(file_stark, "rb"),
-        duration=int(ytdl_data["duration"]),
-        file_name=str(ytdl_data["title"]),
-        caption=capy,
-        supports_streaming=True,
-        progress=progress,
-        progress_args=(
-            pablo,
-            c_time,
-            f"`Uploading {file_stark}.`",
-            file_stark,
-        ),
-    )
-    await pablo.delete()
-    if os.path.exists(file_stark):
-        os.remove(file_stark)
-
-@friday_on_cmd(
-    ["ytmusic", "yta"],
-    cmd_help={
-        "help": "Download YouTube Music just with name!",
-        "example": "{ch}ytmusic (song name OR link)",
-    },
-)
-async def ytmusic(client, message):
-    input_str = get_text(message)
-    pablo = await edit_or_reply(
-        message, f"`Getting {input_str} From Youtube Servers. Please Wait.`"
-    )
-    if not input_str:
-        await pablo.edit(
-            "`Please Give Me A Valid Input. You Can Check Help Menu To Know More!`"
-        )
-        return
-    search = SearchVideos(str(input_str), offset=1, mode="dict", max_results=1)
-    rt = search.result()
-    try:
+    _m = ('http://', 'https://')
+    if "|" in input_str:
+        input_str = input_str.strip()
+        input_str, type_ = input_str.split("|")
+    if input_str.startswith(_m):
+        try:
+            yt_file, yt_data = await yt_dl(url, client, message, type_)
+        except Exception as e:
+            await pablo.edit(engine.get_string("YTDL_FAILED"))
+            return
+    else:
+        await pablo.edit(engine.get_string("GETTING_RESULTS").format(input_str))
+        search = SearchVideos(str(input_str), offset=1, mode="dict", max_results=1)
+        if not search:
+            return await pablo.edit(engine.get_string("NO_RESULTS").format(input_str))
+        rt = search.result()
         result_s = rt["search_result"]
-    except:
-        await pablo.edit(
-            f"Song Not Found With Name {input_str}, Please Try Giving Some Other Name."
-        )
-        return
-    url = result_s[0]["link"]
-    result_s[0]["duration"]
-    vid_title = result_s[0]["title"]
-    yt_id = result_s[0]["id"]
-    uploade_r = result_s[0]["channel"]
+        url = result_s[0]["link"]
+        try:
+            yt_file, yt_data = await yt_dl(url, client, message, type_)
+        except Exception as e:
+            await pablo.edit(engine.get_string("YTDL_FAILED"))
+            return
+    vid_title = yt_data['title']
+    uploade_r = yt_data['uploader']
+    yt_id = yt_data['id']
+    url = yt_data['url']
     thumb_url = f"https://img.youtube.com/vi/{yt_id}/hqdefault.jpg"
-    await asyncio.sleep(0.6)
     downloaded_thumb = wget.download(thumb_url)
-    opts = {
-        "format": "bestaudio",
-        "addmetadata": True,
-        "key": "FFmpegMetadata",
-        "writethumbnail": True,
-        "prefer_ffmpeg": True,
-        "geo_bypass": True,
-        "nocheckcertificate": True,
-        "postprocessors": [
-            {
-                "key": "FFmpegExtractAudio",
-                "preferredcodec": "mp3",
-                "preferredquality": "720",
-            }
-        ],
-        "outtmpl": "%(id)s.mp3",
-        "quiet": True,
-        "logtostderr": False,
-    }
-    try:
-        with YoutubeDL(opts) as ytdl:
-            ytdl_data = ytdl.extract_info(url, download=True)
-    except Exception as e:
-        await pablo.edit(f"**Failed To Download** \n**Error :** `{str(e)}`")
-        return
+    file_stark = yt_file
+    capy = f"**{type_.title()} Name ➠** `{vid_title}` \n**Requested For ➠** `{input_str}` \n**Channel ➠** `{uploade_r}` \n**Link ➠** `{url}`"
     c_time = time.time()
-    capy = f"**Song Name ➠** `{vid_title}` \n**Requested For ➠** `{input_str}` \n**Channel ➠** `{uploade_r}` \n**Link ➠** `{url}`"
-    file_stark = f"{ytdl_data['id']}.mp3"
-    await client.send_audio(
+    await client.send_video(
         message.chat.id,
-        audio=open(file_stark, "rb"),
+        video=open(file_stark, "rb"),
         duration=int(ytdl_data["duration"]),
-        title=str(ytdl_data["title"]),
-        performer=str(ytdl_data["uploader"]),
+        file_name=str(ytdl_data["title"]),
         thumb=downloaded_thumb,
         caption=capy,
+        supports_streaming=True,
         progress=progress,
         progress_args=(
             pablo,
             c_time,
-            f"`Uploading {input_str} Song From YouTube Music!`",
+            f"`Uploading Downloaded Youtube File.`",
             file_stark,
         ),
     )
@@ -225,65 +140,3 @@ async def ytmusic(client, message):
     for files in (downloaded_thumb, file_stark):
         if files and os.path.exists(files):
             os.remove(files)
-
-
-@friday_on_cmd(
-    ["deezer", "dsong"],
-    cmd_help={
-        "help": "Download Songs From Deezer Just With Name!",
-        "example": "{ch}deezer (song name)",
-    },
-)
-async def deezer(client, message):
-    pablo = await edit_or_reply(message, "`Searching For Song.....`")
-    sgname = get_text(message)
-    if not sgname:
-        await pablo.edit(
-            "`Please Give Me A Valid Input. You Can Check Help Menu To Know More!`"
-        )
-        return
-    link = f"https://api.deezer.com/search?q={sgname}&limit=1"
-    dato = requests.get(url=link).json()
-    match = dato.get("data")
-    try:
-        urlhp = match[0]
-    except IndexError:
-        await pablo.edit("`Song Not Found. Try Searching Some Other Song`")
-        return
-    urlp = urlhp.get("link")
-    thumbs = urlhp["album"]["cover_big"]
-    thum_f = wget.download(thumbs)
-    polu = urlhp.get("artist")
-    replo = urlp[29:]
-    urlp = f"https://starkapis.herokuapp.com/deezer/{replo}"
-    datto = requests.get(url=urlp).json()
-    mus = datto.get("url")
-    sname = f"{urlhp.get('title')}.mp3"
-    doc = requests.get(mus)
-    await client.send_chat_action(message.chat.id, "upload_audio")
-    await pablo.edit("`Downloading Song From Deezer!`")
-    with open(sname, "wb") as f:
-        f.write(doc.content)
-    c_time = time.time()
-    car = f"""
-**Song Name :** {urlhp.get("title")}
-**Duration :** {urlhp.get('duration')} Seconds
-**Artist :** {polu.get("name")}
-
-Music Downloaded And Uploaded By Friday Userbot
-
-Get Your Friday From @FridayOT"""
-    await pablo.edit(f"`Downloaded {sname}! Now Uploading Song...`")
-    await client.send_audio(
-        message.chat.id,
-        audio=open(sname, "rb"),
-        duration=int(urlhp.get("duration")),
-        title=str(urlhp.get("title")),
-        performer=str(polu.get("name")),
-        thumb=thum_f,
-        caption=car,
-        progress=progress,
-        progress_args=(pablo, c_time, f"`Uploading {sname} Song From Deezer!`", sname),
-    )
-    await client.send_chat_action(message.chat.id, "cancel")
-    await pablo.delete()
