@@ -208,3 +208,15 @@ TOO_BIG: "`Telegram Message Limit Exceeded, So The Out Put Has Been Paste To` [D
 YTDL_FAILED: "**Youtube Download Failed!** \n**Error :** `{}`"
 NO_RESULTS: "`No Results Found For {}, Perhaps, You Can Be More Specific.`"
 GETTING_RESULTS: "`Searching Results Matching For {}. Please Wait.`"
+ALIVE_: "
+**{}'s Friday-UserBot is Alive!**
+
+➔ **Version :** __{}__
+➔ **Uptime :** __{}__
+➔ **PyroGram Version :** __{}__
+➔ **Python Version :** __{}__
+➔ **OS :** __{}__
+➔ **CPU :** __{}__
+➔ **DISK USAGE :** __{}__
+"
+RESTART: "`🔄 Restarting.. 🔄`"
