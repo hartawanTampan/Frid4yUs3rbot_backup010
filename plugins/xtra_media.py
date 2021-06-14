@@ -41,21 +41,21 @@ if not os.path.isdir(sedpath):
 )
 async def lgo(client, message):
     engine = message.Engine
-    pablo = await edit_or_reply(message, "`Processing...`")
+    pablo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     if not message.reply_to_message:
-        await pablo.edit("Reply to A Animated Sticker...")
+        await pablo.edit(engine.get_string("NEEDS_REPLY").format("Animated Sticker"))
         return
     if not message.reply_to_message.sticker:
-        await pablo.edit("Reply to A Animated Sticker...")
+        await pablo.edit(engine.get_string("NEEDS_REPLY").format("Animated Sticker"))
         return
     if message.reply_to_message.sticker.mime_type != "application/x-tgsticker":
-        await pablo.edit("`Reply to A Animated Sticker...`")
+        await pablo.edit(engine.get_string("NEEDS_REPLY").format("Animated Sticker"))
         return
     lol = await message.reply_to_message.download("tgs.tgs")
     cmdo = f"lottie_convert.py {lol} json.json"
     await runcmd(cmdo)
     if not os.path.exists('json.json'):
-        await pablo.edit("`Invalid Tgs Sticker I Suppose.`")
+        await pablo.edit(engine.get_string("NEEDS_REPLY").format("Animated Sticker"))
         os.remove("tgs.tgs")
         return
     json = open("json.json", "r")
@@ -90,6 +90,14 @@ def download_imgs_from_google(query: str, lim: int):
     path_ = paths[0][query]
     Beast = [InputMediaPhoto(str(x)) for x in path_]
     return path_, Beast
+
+@run_in_exc
+def rm_multiple_files(path_: list):
+    path_ = list(path_)
+    for i in path_:
+        if os.path.exists(i):
+            if os.path.isfile(i):
+                os.remove(i)
 
 @run_in_exc
 def get_img_search_result(imoge: str):
@@ -144,8 +152,7 @@ async def reverseing(client, message):
             lim = int(input_)
             lst, Beast = await download_imgs_from_google(quess, lim)
             await client.send_media_group(message.chat.id, media=Beast)
-            shutil.rmtree(os.path.dirname(os.path.abspath(lst[0])))
-    
+            await rm_multiple_files(Beast)
 @run_in_exc
 def ParseSauce(googleurl):
     """Parse/Scrape the HTML code for the info we want."""
@@ -220,7 +227,7 @@ async def img_search(client, message):
         lim = 5
     lst, Beast = await download_imgs_from_google(query, lim)
     await client.send_media_group(message.chat.id, media=Beast)
-    shutil.rmtree(os.path.dirname(os.path.abspath(lst[0])))
+    await rm_multiple_files(Beast)
     await pablo.delete()
 
 
