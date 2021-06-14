@@ -85,10 +85,10 @@ async def glitchtgi(client, message):
     engine = message.Engine
     pablo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     if not message.reply_to_message:
-        await pablo.edit("Please Reply To Image For Glitching")
+        await pablo.edit(engine.get_string("NEEDS_REPLY").format("Image For Glitching"))
         return
     photolove = await convert_to_image(message, client)
-    await pablo.edit("`Gli, Glitchiiingggg.....`")
+    #await pablo.edit("`Gli, Glitchiiingggg.....`")
     pathsn = f"Glitched.gif"
     glitch_imgs = glitcher.glitch_image(photolove, 2, gif=True, color_offset=True)
     glitch_imgs[0].save(
@@ -124,17 +124,17 @@ async def glitchtgi(client, message):
 )
 async def momify(client, message):
     engine = message.Engine
-    owo = await edit_or_reply(message, "`Making Memes! Look There, OwO`")
+    owo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     img = await convert_to_image(message, client)
     hmm = get_text(message)
     if not hmm:
-        await owo.edit("`Give Text :/`")
+        await owo.edit(engine.get_string("INPUT_REQ").format("Text"))
         returbn
     if not img:
-        await owo.edit("`Reply to a valid media first.`")
+        await owo.edit(engine.get_string("NEEDS_REPLY").format("a valid media first"))
         return
     if not os.path.exists(img):
-        await owo.edit("`Invalid Media!`")
+        await owo.edit(engine.get_string("INVALID_MEDIA"))
         return
     if ";" in hmm:
         stark = hmm.split(";", 1)
