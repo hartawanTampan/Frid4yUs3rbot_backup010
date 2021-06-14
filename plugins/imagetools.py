@@ -531,13 +531,13 @@ async def wewnews(client, message):
 )
 async def color_magic(client, message):
     engine = message.Engine
-    owo = await edit_or_reply(message, "`Using My Color Magic To Color This, OwO!`")
+    owo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     img = await convert_to_image(message, client)
     if not img:
-        await owo.edit("`Reply to a valid media first.`")
+        await owo.edit(engine.get_string("NEEDS_REPLY").format("a valid media first"))
         return
     if not os.path.exists(img):
-        await owo.edit("`Invalid Media!`")
+        await owo.edit(engine.get_string("INVALID_MEDIA"))
         return
     net = cv2.dnn.readNetFromCaffe(
         "./bot_utils_files/ai_helpers/colouregex.prototxt",
@@ -588,7 +588,7 @@ async def color_magic(client, message):
 )
 async def spin(client, message):
     engine = message.Engine
-    pablo = await edit_or_reply(message, "`Processing.....`")
+    pablo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     lolshit = get_text(message)
     if not lolshit:
         lolshit = "1"
@@ -601,7 +601,7 @@ async def spin(client, message):
         return
     keke = str(lolshit)
     if not message.reply_to_message:
-        await pablo.edit("`Reply To Media First !`")
+        await pablo.edit(engine.get_string("NEEDS_REPLY").format("a valid media first"))
         return
     else:
         if lolshit:
@@ -610,10 +610,10 @@ async def spin(client, message):
             step = 1
     pic_loc = await convert_to_image(message, client)
     if not pic_loc:
-        await pablo.edit("`Reply to a valid media first.`")
+        await pablo.edit(engine.get_string("NEEDS_REPLY").format("a valid media first")))
         return
     if not os.path.exists(pic_loc):
-        await pablo.edit("`No Media Found!`")
+        await pablo.edit(engine.get_string("INVALID_MEDIA"))
         return
     await pablo.edit("🌀 `Tighten your seatbelts, sh*t is about to get wild ...`")
     spin_dir = 1
@@ -657,9 +657,7 @@ async def ph(client, message):
     pablo = await edit_or_reply(message, "`Processing.....`")
     Hell = get_text(message)
     if not Hell:
-        await pablo.edit(
-            "`Please Give Me A Valid Input. You Can Check Help Menu To Know More!`"
-        )
+        await pablo.edit(engine.get_string("INPUT_REQ").format("Text, check help menu for more info"))
         return
     Escobar = Hell.split(":")
     username = Escobar[0]
@@ -667,7 +665,7 @@ async def ph(client, message):
         texto = Escobar[1]
     except:
         await pablo.edit(
-            "`Please Give Me A Valid Input. You Can Check Help Menu To Know More!`"
+            engine.get_string("INPUT_REQ").format("Text, check help menu for more info")
         )
         return
     img = Image.open("./bot_utils_files/image_templates/ph_comment_templete.jpg")
@@ -700,11 +698,11 @@ async def ph(client, message):
 )
 async def fgs(client, message):
     engine = message.Engine
-    pablo = await edit_or_reply(message, "`Processing.....`")
+    pablo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     Hell = get_text(message)
     if not Hell:
         await pablo.edit(
-            "`Please Give Me A Valid Input. You Can Check Help Menu To Know More!`"
+            engine.get_string("INPUT_REQ").format("Text for Fake Google Search")
         )
         return
     Escobar = Hell.split(":")
@@ -713,7 +711,7 @@ async def fgs(client, message):
         result = Escobar[1]
     except:
         await pablo.edit(
-            "`Please Give Me A Valid Input. You Can Check Help Menu To Know More!`"
+            engine.get_string("INPUT_REQ").format("Text for Fake Google Search")
         )
         return
     photo = Image.open("./bot_utils_files/image_templates/google_search_templete.jpg")
@@ -748,7 +746,7 @@ async def fgs(client, message):
 )
 async def jail(client, message):
     engine = message.Engine
-    pablo = await edit_or_reply(message, "`Processing.....`")
+    pablo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     Hell = get_text(message)
     if not Hell and not message.reply_to_message:
         await pablo.edit(
@@ -803,7 +801,7 @@ async def jail(client, message):
 )
 async def picgen(client, message):
     engine = message.Engine
-    pablo = await edit_or_reply(message, "`Processing.....`")
+    pablo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     url = "https://thispersondoesnotexist.com/image"
     response = requests.get(url)
     if response.status_code == 200:
@@ -834,12 +832,10 @@ async def picgen(client, message):
 )
 async def slogo(client, message):
     engine = message.Engine
-    event = await edit_or_reply(message, "`Processing.....`")
+    event = await edit_or_reply(message, engine.get_string("PROCESSING"))
     text = get_text(message)
     if not text:
-        await event.edit(
-            "`Please Give Me A Valid Input. You Can Check Help Menu To Know More!`"
-        )
+        await event.edit(engine.get_string("INPUT_REQ").format("Text for logo"))
         return
     img = Image.open("./bot_utils_files/image_templates/yellow_bg_for_logo.jpg")
     draw = ImageDraw.Draw(img)
