@@ -245,8 +245,8 @@ async def ban_world(client, message):
         return
     try:
         user_ = await client.get_users(userz)
-    except:
-        await bun.edit(engine.get_string("USER_MISSING").format("User Doesn't Exists In This Chat !"))
+    except BaseException as e:
+        await bun.edit(engine.get_string("USER_MISSING").format(e))
         return
     try:
         await client.kick_chat_member(message.chat.id, int(user_.id))
@@ -585,7 +585,6 @@ async def purge(client, message):
     u_time = round(end_time - start_time)
     await event.edit(
         engine.get_string("PURGE_").format(purge_len, u_time)
-        f"**>> Flash Purge Done!** \n**>> Total Message Purged :** `{purge_len}` \n**>> Time Taken :** `{u_time}`",
     )
     await asyncio.sleep(3)
     await event.delete()
