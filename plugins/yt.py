@@ -14,6 +14,7 @@ import wget
 from youtube_dl import YoutubeDL
 from youtubesearchpython import SearchVideos
 from main_startup.core.decorators import friday_on_cmd
+from main_startup.helper_func.assistant_helpers import _dl
 from main_startup.helper_func.basic_helpers import edit_or_reply, get_text, progress, humanbytes, run_in_exc, time_formatter
 import threading
 from concurrent.futures import ThreadPoolExecutor
@@ -47,7 +48,6 @@ def yt_dl(url, client, message, type_):
             "format": "bestaudio",
             "addmetadata": True,
             "key": "FFmpegMetadata",
-            "writethumbnail": True,
             "prefer_ffmpeg": True,
             "geo_bypass": True,
             "progress_hooks": [lambda d: download_progress_hook(d, message, client)],
@@ -68,7 +68,6 @@ def yt_dl(url, client, message, type_):
             "format": "best",
             "addmetadata": True,
             "key": "FFmpegMetadata",
-            "writethumbnail": True,
             "prefer_ffmpeg": True,
             "geo_bypass": True,
             "nocheckcertificate": True,
@@ -128,13 +127,13 @@ async def yt_vid(client, message):
     uploade_r = yt_data['uploader']
     yt_id = yt_data['id']
     url = yt_data['url']
-    msg = message.reply_to_message or message
-    thumb = str(yt_id) + ".jpg"
+    msg = message.reply_to_message or message 
+    thumb_url = f"https://img.youtube.com/vi/{yt_id}/hqdefault.jpg"
+    thumb = await _dl(thumb_url)
     caption = f"**{type_.title()} Name ➠** `{vid_title}` \n**Requested For ➠** `{input_str}` \n**Channel ➠** `{uploade_r}` \n**Link ➠** `{url}`"
     c_time = time.time()
     if type_ == "video":
         await msg.reply_video(
-            message.chat.id,
             yt_file,
             duration=int(yt_data["duration"]),
             thumb=thumb,
@@ -150,7 +149,6 @@ async def yt_vid(client, message):
         )
     else:
         await msg.reply_audio(
-            message.chat.id,
             yt_file,
             duration=int(yt_data["duration"]),
             title=str(yt_data["title"]),
