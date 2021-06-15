@@ -144,7 +144,7 @@ async def yt_vid(client, message):
                 pablo,
                 c_time,
                 f"`Uploading Downloaded Youtube File.`",
-                file_stark,
+                yt_file,
             ),
         )
     else:
@@ -162,7 +162,7 @@ async def yt_vid(client, message):
                 pablo,
                 c_time,
                 f"`Uploading Downloaded Youtube File.`",
-                file_stark,
+                yt_file,
             ),
         )
     await pablo.delete()
