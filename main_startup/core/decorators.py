@@ -38,6 +38,7 @@ from main_startup.helper_func.basic_helpers import is_admin_or_owner
 from bot_utils_files.Localization.engine import Engine
 from main_startup.core.helpers import edit_or_reply
 from database.sudodb import sudo_list
+from database.sdcdb import disabled_cmd_list
 
 def friday_on_cmd(
     cmd: list,
@@ -60,6 +61,7 @@ def friday_on_cmd(
         & ~filters.via_bot
         & ~filters.forwarded
     )
+    cmd = list(cmd)
     Engine = LangEngine
     add_help_menu(
         cmd=cmd[0],
@@ -129,7 +131,6 @@ def friday_on_cmd(
                         logging.error(text)
         add_handler(filterm, wrapper, cmd)
         return wrapper
-
     return decorator
 
 
@@ -209,14 +210,9 @@ def add_help_menu(
             
 
 def add_handler(filter_s, func_, cmd):
-    d_c_l = Config.DISABLED_SUDO_CMD_S
-    if d_c_l:
-        d_c_l = d_c_l.split(" ")
-        d_c_l = list(d_c_l)
-        if "dev" in d_c_l:
-            d_c_l.extend(['eval', 'bash', 'install']) 
-        if any(item in list(d_c_l) for item in list(cmd)): 
-            filter_s = (filters.me & filters.command(cmd, Config.COMMAND_HANDLER) & ~filters.via_bot & ~filters.forwarded)
+    s_d_c = Friday.loop.create_task(disabled_cmd_list())
+    if any(item in s_d_c for item in cmd): 
+        filter_s = (filters.me & filters.command(cmd, Config.COMMAND_HANDLER) & ~filters.via_bot & ~filters.forwarded)
     Friday.add_handler(MessageHandler(func_, filters=filter_s), group=0)
     if Friday2:
         Friday2.add_handler(MessageHandler(func_, filters=filter_s), group=0)
