@@ -82,8 +82,8 @@ async def gmute_him(client, message):
         return
     try:
         userz = await client.get_users(user_)
-    except:
-        await ug.edit(engine.get_string("USER_MISSING").format("User Doesn't Exists In This Chat !")))
+    except BaseException as e:
+        await ug.edit(engine.get_string("USER_MISSING").format(e))
         return
     if userz.id == (client.me).id:
         await ug.edit(engine.get_string("TF_DO_IT").format("UN-gmute"))
@@ -119,8 +119,8 @@ async def gbun_him(client, message):
         return
     try:
         userz = await client.get_users(user)
-    except:
-        await gbun.edit(engine.get_string("USER_MISSING").format("User Doesn't Exists In This Chat !")))
+    except BaseException as e:
+        await gbun.edit(engine.get_string("USER_MISSING").format(e))
         return
     if not reason:
         reason = "Private Reason!"
@@ -173,8 +173,8 @@ async def ungbun_him(client, message):
         return
     try:
         userz = await client.get_users(user)
-    except:
-        await ungbun.edit(engine.get_string("USER_MISSING").format("User Doesn't Exists In This Chat !")))
+    except BaseException as e:
+        await ungbun.edit(engine.get_string("USER_MISSING").format(e))
         return
     if userz.id == (client.me).id:
         await ungbun.edit(engine.get_string("TF_DO_IT").format("Un-GBan"))
@@ -208,31 +208,25 @@ async def watch(client, message):
     if not message.from_user:
         return
     user = message.from_user.id
+    if not user:
+        return
     if await is_gmuted(user):
         try:
             await message.delete()
         except:
             return
     if await gban_info(user):
-        if message.chat.type != "supergroup":
+        if message.chat.type == "private":
             return
         try:
-            me_ = await message.chat.get_member(int(client.me.id))
-        except:
-            return
-        if not me_.can_restrict_members:
-            return
-        try:
-            await client.kick_chat_member(message.chat.id, int(user))
-        except:
+            await message.chat.kick_member(int(user))
+        except BaseException:
             return
         await client.send_message(
             message.chat.id,
             f"**#GbanWatch** \n**Chat ID :** `{message.chat.id}` \n**User :** `{user}` \n**Reason :** `{await gban_info(user)}`",
         )
     
-
-
 @friday_on_cmd(
     ["gbanlist"],
     cmd_help={
