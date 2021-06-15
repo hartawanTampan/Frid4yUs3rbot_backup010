@@ -92,7 +92,7 @@ async def set_varr(client, message, app_):
     msg_ = await edit_or_reply(message, engine.get_string("PROCESSING"))
     heroku_var = app_.config()
     _var = get_text(message)
-    syntax = 
+    syntax = f"{Config.COMMAND_HANDLER}setvar ConfigVarName ConfigVarValue" 
     if not _var:
         await msg_.edit(engine.get_string("USAGE").format(syntax))
         return
