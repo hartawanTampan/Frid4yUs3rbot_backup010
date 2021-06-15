@@ -104,10 +104,10 @@ async def yt_vid(client, message):
         rt = search.result()
         result_s = rt["search_result"]
         url = result_s[0]["link"]
-    try:
-        yt_file, yt_data = await yt_dl(url, client, message, type_)
-    except Exception as e:
-        return await pablo.edit(engine.get_string("YTDL_FAILED").format(e))
+    #try:
+    yt_file, yt_data = await yt_dl(url, client, message, type_)
+    #except Exception as e:
+        #return await pablo.edit(engine.get_string("YTDL_FAILED").format(e))
     vid_title = yt_data['title']
     uploade_r = yt_data['uploader']
     yt_id = yt_data['id']
