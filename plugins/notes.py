@@ -109,7 +109,6 @@ async def noteses(client, message):
         kk += f"""\n~ `{Escobar.get("keyword")}`"""
     X = await client.get_chat(message.chat.id)
     grp_nme = X.title
-    mag = engine.get_string("LIST_OF").format("Notes", grp_nme,kk)) + """
-
-Get Notes With `#NoteName`"""
+    mag = engine.get_string("LIST_OF").format("Notes", grp_nme, kk)
+    mag += "\n\nGet Notes With `#Notename`"
     await pablo.edit(mag)
