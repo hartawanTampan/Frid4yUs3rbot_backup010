@@ -45,9 +45,7 @@ async def grs(client, message):
     pablo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     query = get_text(message)
     if not query:
-        await pablo.edit(
-            engine.get_string("INPUT_REQ").format("query"))
-        )
+        await pablo.edit(engine.get_string("INPUT_REQ").format("query"))
         return
     query = urllib.parse.quote_plus(query)
     number_result = 8
