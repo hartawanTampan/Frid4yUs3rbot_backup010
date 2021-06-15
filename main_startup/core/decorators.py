@@ -37,6 +37,7 @@ from main_startup.config_var import Config
 from main_startup.helper_func.basic_helpers import is_admin_or_owner
 from bot_utils_files.Localization.engine import Engine
 from main_startup.core.helpers import edit_or_reply
+from database.sudodb import sudo_list
 
 def friday_on_cmd(
     cmd: list,
