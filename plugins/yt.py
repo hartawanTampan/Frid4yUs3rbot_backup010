@@ -130,7 +130,7 @@ async def yt_vid(client, message):
     thumb = str(yt_id) + ".jpg"
     caption = f"**{type_.title()} Name ➠** `{vid_title}` \n**Requested For ➠** `{input_str}` \n**Channel ➠** `{uploade_r}` \n**Link ➠** `{url}`"
     c_time = time.time()
-    if type_ == "audio":
+    if type_ == "video":
         await msg.reply_video(
             message.chat.id,
             video=yt_file,
@@ -154,7 +154,7 @@ async def yt_vid(client, message):
             quote=True,
             duration=int(yt_data["duration"]),
             file_name=str(yt_data["title"]),
-            performer=uploader,
+            performer=uploade_r,
             thumb=thumb,
             caption=caption,
             progress=progress,
