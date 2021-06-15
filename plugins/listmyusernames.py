@@ -29,7 +29,7 @@ async def pabloescobar(client, message):
     output_stre = ""
     for x in C:
         output_stre += f"{x.title}\n@{x.username}\n\n"
-    output_str = engine.get_string("IAM_ADMIN").format("output_stre"))
+    output_str = engine.get_string("IAM_ADMIN").format("output_stre")
     await edit_or_send_as_file(
         output_str, pablo, client, "Your Admin Chats", "admin_chat"
     )
