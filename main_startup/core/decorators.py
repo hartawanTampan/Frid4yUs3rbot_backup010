@@ -11,7 +11,7 @@ import logging
 import os
 from datetime import datetime
 from traceback import format_exc
-
+import asyncio
 import pytz
 from pyrogram import ContinuePropagation, StopPropagation, filters
 from pyrogram.errors.exceptions.bad_request_400 import (
@@ -52,8 +52,9 @@ def friday_on_cmd(
     cmd_help: dict = {"help": "No One One Gonna Help You", "example": "{ch}what"},
 ):
     """- Main Decorator To Register Commands. -"""
+    sudo_list_ = asyncio.run(sudo_list())
     filterm = (
-        (filters.me | filters.user(Config.AFS))
+        (filters.me | filters.user(sudo_list_))
         & filters.command(cmd, Config.COMMAND_HANDLER)
         & ~filters.via_bot
         & ~filters.forwarded
