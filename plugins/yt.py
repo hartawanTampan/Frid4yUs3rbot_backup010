@@ -82,6 +82,7 @@ def yt_dl(url, client, message, type_):
     with YoutubeDL(opts) as ytdl:
         ytdl_data = ytdl.extract_info(url, download=True)
     file_name = f"{ytdl_data['id']}.mp3" if type_ == "audio" else f"{ytdl_data['id']}.mp4"
+    print(file_name)
     return file_name, ytdl_data
 
 
