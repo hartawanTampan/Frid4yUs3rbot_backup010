@@ -207,7 +207,7 @@ async def c_imagenote(client, message):
     owo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     img = await convert_to_image(message, client)
     if not img:
-        await owo.edit(engine.get_string("NEEDS_REPLY").format("a valid media first")))
+        await owo.edit(engine.get_string("NEEDS_REPLY").format("A Valid Media"))
         return
     if not os.path.exists(img):
         await owo.edit(engine.get_string("INVALID_MEDIA"))
@@ -242,7 +242,7 @@ async def mirrorlol(client, message):
     owo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     img = await convert_to_image(message, client)
     if not img:
-        await owo.edit(engine.get_string("NEEDS_REPLY").format("a valid media first")))
+        await owo.edit(engine.get_string("NEEDS_REPLY").format("A Valid Media"))
         return
     if not os.path.exists(img):
         await owo.edit(engine.get_string("INVALID_MEDIA"))
@@ -277,7 +277,7 @@ async def oohno(client, message):
     owo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     img = await convert_to_image(message, client)
     if not img:
-        await owo.edit(engine.get_string("NEEDS_REPLY").format("a valid media first")))
+        await owo.edit(engine.get_string("NEEDS_REPLY").format("A Valid Media"))
         return
     if not os.path.exists(img):
         await owo.edit(engine.get_string("INVALID_MEDIA"))
@@ -313,7 +313,7 @@ async def nice(client, message):
     owo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     img = await convert_to_image(message, client)
     if not img:
-        await owo.edit(engine.get_string("NEEDS_REPLY").format("a valid media first")))
+        await owo.edit(engine.get_string("NEEDS_REPLY").format("A Valid Media"))
         return
     if not os.path.exists(img):
         await owo.edit(engine.get_string("INVALID_MEDIA"))
@@ -404,7 +404,7 @@ async def weallarethugs(client, message):
     tgi = await edit_or_reply(message, engine.get_string("PROCESSING"))
     img = await convert_to_image(message, client)
     if not img:
-        await tgi.edit(engine.get_string("NEEDS_REPLY").format("a valid media first")))
+        await tgi.edit(engine.get_string("NEEDS_REPLY").format("A Valid Media"))
         return
     if not os.path.exists(img):
         await tgi.edit(engine.get_string("INVALID_MEDIA"))
@@ -450,7 +450,7 @@ async def toonize(client, message):
     tgi = await edit_or_reply(message, engine.get_string("PROCESSING"))
     img = await convert_to_image(message, client)
     if not img:
-        await tgi.edit(engine.get_string("NEEDS_REPLY").format("a valid media first")))
+        await tgi.edit(engine.get_string("NEEDS_REPLY").format("A Valid Media"))
         return
     if not os.path.exists(img):
         await tgi.edit(engine.get_string("INVALID_MEDIA"))
@@ -488,11 +488,11 @@ async def wewnews(client, message):
         await pablo.edit(engine.get_string("INPUT_REQ").format("Headlines For News"))
         return
     if not message.reply_to_message:
-        await pablo.edit(engine.get_string("NEEDS_REPLY").format("a valid media")))
+        await pablo.edit(engine.get_string("NEEDS_REPLY").format("A Valid Media"))
         return
     img = await convert_to_image(message, client)
     if not img:
-        await pablo.edit(engine.get_string("NEEDS_REPLY").format("a valid media first")))
+        await pablo.edit(engine.get_string("NEEDS_REPLY").format("A Valid Media"))
         return
     if not os.path.exists(img):
         await pablo.edit(engine.get_string("INVALID_MEDIA"))
@@ -534,7 +534,7 @@ async def color_magic(client, message):
     owo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     img = await convert_to_image(message, client)
     if not img:
-        await owo.edit(engine.get_string("NEEDS_REPLY").format("a valid media first"))
+        await owo.edit(engine.get_string("NEEDS_REPLY").format("A Valid Media"))
         return
     if not os.path.exists(img):
         await owo.edit(engine.get_string("INVALID_MEDIA"))
@@ -601,7 +601,7 @@ async def spin(client, message):
         return
     keke = str(lolshit)
     if not message.reply_to_message:
-        await pablo.edit(engine.get_string("NEEDS_REPLY").format("a valid media first"))
+        await pablo.edit(engine.get_string("NEEDS_REPLY").format("A Valid Media"))
         return
     else:
         if lolshit:
@@ -610,7 +610,7 @@ async def spin(client, message):
             step = 1
     pic_loc = await convert_to_image(message, client)
     if not pic_loc:
-        await pablo.edit(engine.get_string("NEEDS_REPLY").format("a valid media first")))
+        await pablo.edit(engine.get_string("NEEDS_REPLY").format("A Valid Media"))
         return
     if not os.path.exists(pic_loc):
         await pablo.edit(engine.get_string("INVALID_MEDIA"))
@@ -654,10 +654,10 @@ async def spin(client, message):
 )
 async def ph(client, message):
     engine = message.Engine
-    pablo = await edit_or_reply(message, "`Processing.....`")
+    pablo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     Hell = get_text(message)
     if not Hell:
-        await pablo.edit(engine.get_string("INPUT_REQ").format("Text, check help menu for more info"))
+        await pablo.edit(engine.get_string("INPUT_REQ").format("Text."))
         return
     Escobar = Hell.split(":")
     username = Escobar[0]
@@ -665,7 +665,7 @@ async def ph(client, message):
         texto = Escobar[1]
     except:
         await pablo.edit(
-            engine.get_string("INPUT_REQ").format("Text, check help menu for more info")
+            engine.get_string("INPUT_REQ").format("Text")
         )
         return
     img = Image.open("./bot_utils_files/image_templates/ph_comment_templete.jpg")
@@ -702,7 +702,7 @@ async def fgs(client, message):
     Hell = get_text(message)
     if not Hell:
         await pablo.edit(
-            engine.get_string("INPUT_REQ").format("Text for Fake Google Search")
+            engine.get_string("INPUT_REQ").format("Text")
         )
         return
     Escobar = Hell.split(":")
@@ -711,7 +711,7 @@ async def fgs(client, message):
         result = Escobar[1]
     except:
         await pablo.edit(
-            engine.get_string("INPUT_REQ").format("Text for Fake Google Search")
+            engine.get_string("INPUT_REQ").format("Text")
         )
         return
     photo = Image.open("./bot_utils_files/image_templates/google_search_templete.jpg")
@@ -750,7 +750,7 @@ async def jail(client, message):
     Hell = get_text(message)
     if not Hell and not message.reply_to_message:
         await pablo.edit(
-            "`Please Give Me A Valid Input. You Can Check Help Menu To Know More!`"
+            engine.get_string("NEEDS_REPLY").format("A Image.")
         )
         return
     if message.reply_to_message:
@@ -762,7 +762,7 @@ async def jail(client, message):
             try:
                 img = await client.download_media(lol[0].file_id)
             except IndexError:
-                await pablo.edit("User Has No Profile Picture")
+                await pablo.edit("`User Has No Profile Picture!`")
                 return
     if Hell and not message.reply_to_message:
         lol = await client.get_profile_photos(Hell, limit=1)
@@ -771,7 +771,7 @@ async def jail(client, message):
             img = await client.download_media(lol[0].file_id)
 
         except IndexError:
-            await pablo.edit("User Has No Profile Picture")
+            await pablo.edit("`This User Has No Profile Picture.`")
             return
     mon = "./bot_utils_files/image_templates/jail_templete.png"
     foreground = Image.open(mon).convert("RGBA")
@@ -835,7 +835,7 @@ async def slogo(client, message):
     event = await edit_or_reply(message, engine.get_string("PROCESSING"))
     text = get_text(message)
     if not text:
-        await event.edit(engine.get_string("INPUT_REQ").format("Text for logo"))
+        await event.edit(engine.get_string("INPUT_REQ").format("Text"))
         return
     img = Image.open("./bot_utils_files/image_templates/yellow_bg_for_logo.jpg")
     draw = ImageDraw.Draw(img)
@@ -887,7 +887,7 @@ async def adityalogo(client, message):
     event = await edit_or_reply(message, engine.get_string("PROCESSING"))
     text = get_text(message)
     if not text:
-        await event.edit(engine.get_string("INPUT_REQ").format("Text For Logo"))
+        await event.edit(engine.get_string("INPUT_REQ").format("Text"))
         return
     img = Image.open("./bot_utils_files/image_templates/black_blank_image.jpg")
     draw = ImageDraw.Draw(img)
@@ -933,7 +933,7 @@ async def ujwal_s_ticker(client, message):
     msg_ = await edit_or_reply(message, engine.get_string("PROCESSING"))
     text = get_text(message)
     if not text:
-        msg_.edit(engine.get_string("INPUT_REQ").format("Text For Sticker"))
+        msg_.edit(engine.get_string("INPUT_REQ").format("Text"))
         return
     sticktext = textwrap.wrap(text, width=10)
     sticktext = "\n".join(sticktext)
