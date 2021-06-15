@@ -53,7 +53,7 @@ def friday_on_cmd(
     cmd_help: dict = {"help": "No One One Gonna Help You", "example": "{ch}what"},
 ):
     """- Main Decorator To Register Commands. -"""
-    sudo_list_ = asyncio.run(sudo_list())
+    sudo_list_ = Friday.loop.create_task(sudo_list())
     filterm = (
         (filters.me | filters.user(sudo_list_))
         & filters.command(cmd, Config.COMMAND_HANDLER)
