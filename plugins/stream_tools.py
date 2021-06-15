@@ -30,18 +30,14 @@ def edit_msg(client, message, to_edit):
         pass
     
 def download_progress_hook(d, message, client):
-    elapsed = d.get("elapsed")
     if d['status'] == 'downloading':
-        current = d.get("_downloaded_bytes_str") or humanbytes(d.get("downloaded_bytes", 1))
+        current = d.get("_downloaded_bytes_str") or humanbytes(int(d.get("downloaded_bytes", 1)))
         total = d.get("_total_bytes_str") or d.get("_total_bytes_estimate_str")
         file_name = d.get("filename")
         eta = d.get('_eta_str', "N/A")
         percent = d.get("_percent_str", "N/A")
         speed = d.get("_speed_str", "N/A")
         to_edit = f"<b><u>Downloading File</b></u> \n<b>File Name :</b> <code>{file_name}</code> \n<b>File Size :</b> <code>{total}</code> \n<b>Speed :</b> <code>{speed}</code> \n<b>ETA :</b> <code>{eta}</code> \n<i>Download {current} out of {total}</i> (__{percent}__)"
-        threading.Thread(target=edit_msg, args=(client, message, to_edit)).start()
-    elif d['status'] == 'finished':
-        to_edit = f"`[Download Completed]` in (__{time_formatter(elapsed)}__)."
         threading.Thread(target=edit_msg, args=(client, message, to_edit)).start()
 
 @run_in_exc
@@ -59,7 +55,13 @@ def yt_dl(url, client, message, type_):
                  {
                      "key": "FFmpegExtractAudio",
                      "preferredcodec": "mp3" if type_ == "audio" else "mp4"
-                 }
+                 },
+                 {
+                     'key': 'EmbedThumbnail'
+                 },
+                 {            
+                     'key': 'FFmpegMetadata'
+                 },
              ],
              "outtmpl": "%(id)s.mp3" if type_ == "audio" else "%(id)s.mp4",
              "quiet": True,
@@ -93,11 +95,7 @@ async def yt_vid(client, message):
         input_str = input_str.strip()
         input_str, type_ = input_str.split("|")
     if input_str.startswith(_m):
-        try:
-            yt_file, yt_data = await yt_dl(url, client, message, type_)
-        except Exception as e:
-            await pablo.edit(engine.get_string("YTDL_FAILED"))
-            return
+        url = input_str
     else:
         await pablo.edit(engine.get_string("GETTING_RESULTS").format(input_str))
         search = SearchVideos(str(input_str), offset=1, mode="dict", max_results=1)
@@ -106,27 +104,24 @@ async def yt_vid(client, message):
         rt = search.result()
         result_s = rt["search_result"]
         url = result_s[0]["link"]
-        try:
-            yt_file, yt_data = await yt_dl(url, client, message, type_)
-        except Exception as e:
-            await pablo.edit(engine.get_string("YTDL_FAILED").format(e))
-            return
+    try:
+        yt_file, yt_data = await yt_dl(url, client, message, type_)
+    except Exception as e:
+        return await pablo.edit(engine.get_string("YTDL_FAILED").format(e))
     vid_title = yt_data['title']
     uploade_r = yt_data['uploader']
     yt_id = yt_data['id']
     url = yt_data['url']
-    thumb_url = f"https://img.youtube.com/vi/{yt_id}/hqdefault.jpg"
-    downloaded_thumb = wget.download(thumb_url)
-    file_stark = yt_file
-    capy = f"**{type_.title()} Name ➠** `{vid_title}` \n**Requested For ➠** `{input_str}` \n**Channel ➠** `{uploade_r}` \n**Link ➠** `{url}`"
+    thumb = str(yt_id) + ".jpg"
+    caption = f"**{type_.title()} Name ➠** `{vid_title}` \n**Requested For ➠** `{input_str}` \n**Channel ➠** `{uploade_r}` \n**Link ➠** `{url}`"
     c_time = time.time()
     await client.send_video(
         message.chat.id,
-        video=open(file_stark, "rb"),
-        duration=int(ytdl_data["duration"]),
-        file_name=str(ytdl_data["title"]),
-        thumb=downloaded_thumb,
-        caption=capy,
+        video=yt_file,
+        duration=int(yt_data["duration"]),
+        file_name=str(yt_data["title"]),
+        thumb=thumb,
+        caption=caption,
         supports_streaming=True,
         progress=progress,
         progress_args=(
