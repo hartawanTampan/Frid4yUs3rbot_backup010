@@ -68,7 +68,7 @@ def yt_dl(url, client, message, type_):
     with YoutubeDL(opts) as ytdl:
         ytdl_data = ytdl.extract_info(url, download=True)
     file_name = f"{ytdl_data['id']}.mp3" if type_ == "audio" else f"{ytdl_data['id']}.mp4"
-    return file_name, yt_data
+    return file_name, ytdl_data
 
 
 @friday_on_cmd(
@@ -109,7 +109,7 @@ async def yt_vid(client, message):
         try:
             yt_file, yt_data = await yt_dl(url, client, message, type_)
         except Exception as e:
-            await pablo.edit(engine.get_string("YTDL_FAILED"))
+            await pablo.edit(engine.get_string("YTDL_FAILED").format(e))
             return
     vid_title = yt_data['title']
     uploade_r = yt_data['uploader']
