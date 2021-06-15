@@ -42,31 +42,43 @@ def download_progress_hook(d, message, client):
 
 @run_in_exc
 def yt_dl(url, client, message, type_):
-    opts = {
-             "format": "bestaudio" if type_ == "audio" else "best",
-             "addmetadata": True,
-             "key": "FFmpegMetadata",
-             "writethumbnail": True,
-             "prefer_ffmpeg": True,
-             "geo_bypass": True,
-             "progress_hooks": [lambda d: download_progress_hook(d, message, client)],
-             "nocheckcertificate": True,
-             "postprocessors": [
-                 {
-                     "key": "FFmpegExtractAudio",
-                     "preferredcodec": "mp3" if type_ == "audio" else "mp4"
-                 },
-                 {
-                     'key': 'EmbedThumbnail'
-                 },
-                 {            
-                     'key': 'FFmpegMetadata'
-                 },
-             ],
-             "outtmpl": "%(id)s.mp3" if type_ == "audio" else "%(id)s.mp4",
-             "quiet": True,
-             "logtostderr": False,
-         }
+    if type_ == "audio":
+        opts = {
+            "format": "bestaudio",
+            "addmetadata": True,
+            "key": "FFmpegMetadata",
+            "writethumbnail": True,
+            "prefer_ffmpeg": True,
+            "geo_bypass": True,
+            "progress_hooks": [lambda d: download_progress_hook(d, message, client)],
+            "nocheckcertificate": True,
+            "postprocessors": [
+                {
+                    "key": "FFmpegExtractAudio",
+                    "preferredcodec": "mp3",
+                    "preferredquality": "320",
+                }
+            ],
+            "outtmpl": "%(id)s.mp3",
+            "quiet": True,
+            "logtostderr": False,
+        }
+    else:
+        opts = {
+            "format": "best",
+            "addmetadata": True,
+            "key": "FFmpegMetadata",
+            "prefer_ffmpeg": True,
+            "geo_bypass": True,
+            "nocheckcertificate": True,
+            "progress_hooks": [lambda d: download_progress_hook(d, message, client)],
+            "postprocessors": [
+                {"key": "FFmpegVideoConvertor", "preferedformat": "mp4"}
+            ],
+            "outtmpl": "%(id)s.mp4",
+            "logtostderr": False,
+            "quiet": True,
+        }
     with YoutubeDL(opts) as ytdl:
         ytdl_data = ytdl.extract_info(url, download=True)
     file_name = f"{ytdl_data['id']}.mp3" if type_ == "audio" else f"{ytdl_data['id']}.mp4"
