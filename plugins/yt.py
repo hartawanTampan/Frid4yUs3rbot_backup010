@@ -106,6 +106,8 @@ async def yt_vid(client, message):
     if "|" in input_str:
         input_str = input_str.strip()
         input_str, type_ = input_str.split("|")
+    if type_ not in ['audio', 'video']:
+        return await pablo.edit(engine.get_string("NEEDS_C_INPUT"))
     if input_str.startswith(_m):
         url = input_str
     else:
@@ -116,33 +118,53 @@ async def yt_vid(client, message):
         rt = search.result()
         result_s = rt["search_result"]
         url = result_s[0]["link"]
-    #try:
-    yt_file, yt_data = await yt_dl(url, client, message, type_)
-    #except Exception as e:
-        #return await pablo.edit(engine.get_string("YTDL_FAILED").format(e))
+    try:
+        yt_file, yt_data = await yt_dl(url, client, message, type_)
+    except Exception as e:
+        return await pablo.edit(engine.get_string("YTDL_FAILED").format(e))
     vid_title = yt_data['title']
     uploade_r = yt_data['uploader']
     yt_id = yt_data['id']
     url = yt_data['url']
+    msg = message.reply_to_message or message
     thumb = str(yt_id) + ".jpg"
     caption = f"**{type_.title()} Name ➠** `{vid_title}` \n**Requested For ➠** `{input_str}` \n**Channel ➠** `{uploade_r}` \n**Link ➠** `{url}`"
     c_time = time.time()
-    await client.send_video(
-        message.chat.id,
-        video=yt_file,
-        duration=int(yt_data["duration"]),
-        file_name=str(yt_data["title"]),
-        thumb=thumb,
-        caption=caption,
-        supports_streaming=True,
-        progress=progress,
-        progress_args=(
-            pablo,
-            c_time,
-            f"`Uploading Downloaded Youtube File.`",
-            file_stark,
-        ),
-    )
+    if type_ == "audio":
+        await msg.reply_video(
+            message.chat.id,
+            video=yt_file,
+            quote=True,
+            duration=int(yt_data["duration"]),
+            thumb=thumb,
+            caption=caption,
+            supports_streaming=True,
+            progress=progress,
+            progress_args=(
+                pablo,
+                c_time,
+                f"`Uploading Downloaded Youtube File.`",
+                file_stark,
+            ),
+        )
+    else:
+        await msg.reply_audio(
+            message.chat.id,
+            audio=yt_file,
+            quote=True,
+            duration=int(yt_data["duration"]),
+            file_name=str(yt_data["title"]),
+            performer=uploader,
+            thumb=thumb,
+            caption=caption,
+            progress=progress,
+            progress_args=(
+                pablo,
+                c_time,
+                f"`Uploading Downloaded Youtube File.`",
+                file_stark,
+            ),
+        )
     await pablo.delete()
     for files in (downloaded_thumb, file_stark):
         if files and os.path.exists(files):
