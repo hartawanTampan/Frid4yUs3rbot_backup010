@@ -375,7 +375,7 @@ async def ujwal_mote(client, message):
 )
 async def ujwal_demote(client, message):
     engine = message.Engine
-    pablo = await edit_or_reply(message, engine.get_string("PROCESSING")))
+    pablo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     me_m = client.me
     await message.chat.get_member(int(me_m.id))
     asplit = get_text(message)
