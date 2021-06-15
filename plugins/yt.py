@@ -133,7 +133,7 @@ async def yt_vid(client, message):
     if type_ == "video":
         await msg.reply_video(
             message.chat.id,
-            video=yt_file,
+            yt_file,
             quote=True,
             duration=int(yt_data["duration"]),
             thumb=thumb,
@@ -144,13 +144,13 @@ async def yt_vid(client, message):
                 pablo,
                 c_time,
                 f"`Uploading Downloaded Youtube File.`",
-                yt_file,
+                str(yt_file),
             ),
         )
     else:
         await msg.reply_audio(
             message.chat.id,
-            audio=yt_file,
+            yt_file,
             quote=True,
             duration=int(yt_data["duration"]),
             file_name=str(yt_data["title"]),
@@ -162,7 +162,7 @@ async def yt_vid(client, message):
                 pablo,
                 c_time,
                 f"`Uploading Downloaded Youtube File.`",
-                yt_file,
+                str(yt_file),
             ),
         )
     await pablo.delete()
