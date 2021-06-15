@@ -135,7 +135,6 @@ async def yt_vid(client, message):
         await msg.reply_video(
             message.chat.id,
             yt_file,
-            quote=True,
             duration=int(yt_data["duration"]),
             thumb=thumb,
             caption=caption,
@@ -152,7 +151,6 @@ async def yt_vid(client, message):
         await msg.reply_audio(
             message.chat.id,
             yt_file,
-            quote=True,
             duration=int(yt_data["duration"]),
             file_name=str(yt_data["title"]),
             performer=uploade_r,
