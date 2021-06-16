@@ -177,7 +177,7 @@ async def allow(client, message):
         if not await is_user_approved(int(message.chat.id)):
             await approve_user(int(message.chat.id))
         else:
-            await message.edit(engine.get_string("FILTER_1").format("USER", message.chat.id))
+            await message.edit(engine.get_string("USER_ALREADY_APPROVED").format(message.reply_to_message.from_user.mention))
             await asyncio.sleep(3)
             await message.delete()
             return
@@ -197,7 +197,7 @@ async def allow(client, message):
         if not await is_user_approved(message.reply_to_message.from_user.id):
             await approve_user(message.reply_to_message.from_user.id)
         else:
-            await message.edit(engine.get_string("FILTER_1").format("USER", message.reply_to_message.from_user.id))
+            await message.edit(engine.get_string("USER_ALREADY_APPROVED").format(message.reply_to_message.from_user.mention))
             await asyncio.sleep(3)
             await message.delete()
             return
@@ -229,7 +229,7 @@ async def disallow(client, message):
             await disapprove_user(int(message.chat.id))
         else:
             await message.edit(
-                engine.get_string("FILTER_1").format("USER", message.chat.id))
+                engine.get_string("USER_NOT_APPROVED").format(message.reply_to_message.from_user.mention))
             await asyncio.sleep(3)
             await message.delete()
             return
@@ -250,7 +250,7 @@ async def disallow(client, message):
             await disapprove_user(message.reply_to_message.from_user.id)
         else:
             await message.edit(
-                engine.get_string("FILTER_1").format("USER", message.reply_to_message.from_user.id))
+                engine.get_string("USER_NOT_APPROVED").format(message.reply_to_message.from_user.mention))
             await asyncio.sleep(3)
             await message.delete()
             return
