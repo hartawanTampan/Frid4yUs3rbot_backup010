@@ -126,7 +126,6 @@ async def yt_vid(client, message):
     vid_title = yt_data['title']
     uploade_r = yt_data['uploader']
     yt_id = yt_data['id']
-    url = yt_data['url']
     msg = message.reply_to_message or message 
     thumb_url = f"https://img.youtube.com/vi/{yt_id}/hqdefault.jpg"
     thumb = await _dl(thumb_url)
@@ -164,6 +163,6 @@ async def yt_vid(client, message):
             ),
         )
     await pablo.delete()
-    for files in (downloaded_thumb, file_stark):
+    for files in (thumb, file_stark):
         if files and os.path.exists(files):
             os.remove(files)
