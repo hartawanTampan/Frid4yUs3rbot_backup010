@@ -41,11 +41,11 @@ from database.sudodb import sudo_list
 from database.sdcdb import disabled_cmd_list
 
 async def get_rdata():
-    dlist = await disabled_cmd_list()
+    #dlist = await disabled_cmd_list()
     sudolist = await sudo_list()
-    return dlist, sudolist
+    return sudolist
 
-sudo_list_, dlist = Friday.loop.create_task(get_rdata())
+sudo_list_ = Friday.loop.create_task(get_rdata())
 
 def friday_on_cmd(
     cmd: list,
@@ -216,8 +216,8 @@ def add_help_menu(
             
 
 def add_handler(filter_s, func_, cmd, s_d_c):
-    if any(item in s_d_c for item in cmd): 
-        filter_s = (filters.me & filters.command(cmd, Config.COMMAND_HANDLER) & ~filters.via_bot & ~filters.forwarded)
+    #if any(item in s_d_c for item in cmd): 
+    #    filter_s = (filters.me & filters.command(cmd, Config.COMMAND_HANDLER) & ~filters.via_bot & ~filters.forwarded)
     Friday.add_handler(MessageHandler(func_, filters=filter_s), group=0)
     if Friday2:
         Friday2.add_handler(MessageHandler(func_, filters=filter_s), group=0)
