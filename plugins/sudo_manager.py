@@ -43,6 +43,9 @@ async def add_s_sudo(client, message):
     except BaseException as e:
         await msg_.edit(engine.get_string("USER_MISSING").format(e))
         return
+    if user.id == client.me.id:
+        await msg_.delete()
+        return
     if await is_user_sudo(user.id):
       return await msg_.edit(engine.get_string("USER_ALREADY_IN_SUDODB").format(user.mention))
     await add_sudo(int(user.id))
