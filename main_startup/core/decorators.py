@@ -45,7 +45,7 @@ sudo_list_ = Friday.loop.create_task(sudo_list())
 async def owner_and_sudo(f, client, message):
     if message.from_user.is_self:
         return bool(True)
-    elif message.from_user.id in sudo_list_:
+    elif message.from_user.id in sudo_list_.result():
         return bool(True)
     return bool(False)
 
