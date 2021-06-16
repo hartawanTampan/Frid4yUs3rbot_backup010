@@ -25,7 +25,11 @@ from database.sudodb import is_user_sudo, sudo_list, add_sudo, rm_sudo
 from plugins import devs_id
 
 
-@friday_on_cmd(['addsudo'])
+@friday_on_cmd(['addsudo'],
+              cmd_help={
+                "help": "Add User To Sudo List.",
+                "example": "{ch}addsudo (reply_to_user)",
+    })
 async def add_s_sudo(client, message):
     engine = message.Engine
     msg_ = await edit_or_reply(message, engine.get_string("PROCESSING"))
@@ -44,7 +48,11 @@ async def add_s_sudo(client, message):
     await add_sudo(int(user.id))
     await msg_.edit(engine.get_string("ADDED_TO_SUDO").format(user.mention))
     
-@friday_on_cmd(['rmsudo'])
+@friday_on_cmd(['rmsudo'],
+              cmd_help={
+                "help": "Remove User From Sudo List.",
+                "example": "{ch}rmsudo (reply_to_user)",
+    })
 async def rm_s_sudo(client, message):
     engine = message.Engine
     msg_ = await edit_or_reply(message, engine.get_string("PROCESSING"))
@@ -63,7 +71,11 @@ async def rm_s_sudo(client, message):
     await rm_sudo(int(user.id))
     await msg_.edit(engine.get_string("RM_FROM_SUDO").format(user.mention))
     
-@friday_on_cmd(['listsudo'])
+@friday_on_cmd(['listsudo'],
+              cmd_help={
+                "help": "Get Sudo List.",
+                "example": "{ch}listsudo",
+    })
 async def lust_sudo(client, message):
     engine = message.Engine
     msg_ = await edit_or_reply(message, engine.get_string("PROCESSING"))
