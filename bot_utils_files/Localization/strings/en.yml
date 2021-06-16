@@ -225,3 +225,5 @@ ADDED_TO_SUDO: "`Added` {} `To My Sudo Database. Please Restart To Apply Changes
 USER_ALREADY_NOT_IN_SUDODB: "`This User -` {} `is Not in My Sudo DB. I Don't Think Its Wise To Remove Him.`"
 RM_FROM_SUDO: "`Removed` {} `From My Sudo Database. Please Restart To Apply Changes.`"
 LIST_OF_SUDO: "`List Of Sudo Users :\n\n`"
+USER_ALREADY_APPROVED: "`This` {} `User is Already Approved.`"
+USER_NOT_APPROVED: "`This` {} `User is not Approved.`"
