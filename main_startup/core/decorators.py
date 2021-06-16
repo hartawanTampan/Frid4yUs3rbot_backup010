@@ -38,7 +38,6 @@ from main_startup.helper_func.basic_helpers import is_admin_or_owner
 from bot_utils_files.Localization.engine import Engine
 from main_startup.core.helpers import edit_or_reply
 from database.sudodb import sudo_list
-from database.sdcdb import disabled_cmd_list
 
 sudo_list_ = Friday.loop.create_task(sudo_list_())
 
