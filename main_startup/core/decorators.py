@@ -40,12 +40,7 @@ from main_startup.core.helpers import edit_or_reply
 from database.sudodb import sudo_list
 from database.sdcdb import disabled_cmd_list
 
-async def get_rdata():
-    #dlist = await disabled_cmd_list()
-    sudolist = await sudo_list()
-    return sudolist
-
-sudo_list_ = Friday.loop.create_task(get_rdata())
+sudo_list_ = Friday.loop.create_task(sudo_list_())
 
 def friday_on_cmd(
     cmd: list,
@@ -135,7 +130,7 @@ def friday_on_cmd(
                         await client.send_message(Config.LOG_GRP, text)
                     except BaseException:
                         logging.error(text)
-        add_handler(filterm, wrapper, cmd, dlist)
+        add_handler(filterm, wrapper, cmd)
         return wrapper
     return decorator
 
@@ -215,9 +210,15 @@ def add_help_menu(
             ] += f"\n\n**Command :** `{Config.COMMAND_HANDLER}{cmd}` \n**Help :** `{cmd_help}` \n**Example :** `{cmd_helpz}`"
             
 
-def add_handler(filter_s, func_, cmd, s_d_c):
-    #if any(item in s_d_c for item in cmd): 
-    #    filter_s = (filters.me & filters.command(cmd, Config.COMMAND_HANDLER) & ~filters.via_bot & ~filters.forwarded)
+def add_handler(filter_s, func_, cmd):
+    d_c_l = Config.DISABLED_SUDO_CMD_S
+    if d_c_l:
+        d_c_l = d_c_l.split(" ")
+        d_c_l = list(d_c_l)
+        if "dev" in d_c_l:
+            d_c_l.extend(['eval', 'bash', 'install']) 
+        if any(item in list(d_c_l) for item in list(cmd)): 
+            filter_s = (filters.me & filters.command(cmd, Config.COMMAND_HANDLER) & ~filters.via_bot & ~filters.forwarded)
     Friday.add_handler(MessageHandler(func_, filters=filter_s), group=0)
     if Friday2:
         Friday2.add_handler(MessageHandler(func_, filters=filter_s), group=0)
