@@ -45,6 +45,8 @@ async def get_rdata():
     sudolist = await sudo_list()
     return dlist, sudolist
 
+sudo_list_, dlist = Friday.loop.create_task(get_rdata())
+
 def friday_on_cmd(
     cmd: list,
     group: int = 0,
@@ -60,7 +62,6 @@ def friday_on_cmd(
 ):
     """- Main Decorator To Register Commands. -"""
     
-    sudo_list_, dlist = Friday.loop.create_task(get_rdata())
     filterm = (
         (filters.me | filters.user(sudo_list_))
         & filters.command(cmd, Config.COMMAND_HANDLER)
@@ -76,7 +77,6 @@ def friday_on_cmd(
         cmd_help=cmd_help["help"],
         example=cmd_help["example"],
     )
-
     def decorator(func):
         async def wrapper(client, message):
             message.Engine = Engine
