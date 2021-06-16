@@ -43,6 +43,8 @@ from database.sudodb import sudo_list
 sudo_list_ = Friday.loop.create_task(sudo_list())
 
 async def owner_and_sudo(f, client, message):
+    if not (message or message.from_user):
+        return bool(False)
     if message.from_user.is_self:
         return bool(True)
     elif message.from_user.id in sudo_list_.result():
