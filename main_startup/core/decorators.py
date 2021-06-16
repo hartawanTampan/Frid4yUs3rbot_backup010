@@ -40,18 +40,16 @@ from main_startup.core.helpers import edit_or_reply
 from database.sudodb import sudo_list
 
 
-sudo_list_ = Friday.loop.create_task(sudo_list())
+sudo_list_ = (Friday.loop.create_task(sudo_list())).result()
 
-async def owner_and_sudo(f, client, message):
+async def _sudo(f, client, message):
     if not (message or message.from_user):
         return bool(False)
-    if message.from_user.is_self:
-        return bool(True)
-    elif message.from_user.id in sudo_list_.result():
+    elif message.from_user.id in sudo_list_:
         return bool(True)
     return bool(False)
 
-owner_and_sudo = filters.create(func=owner_and_sudo, name="owner_and_sudo")
+_sudo = filters.create(func=_sudo, name="_sudo")
 
 def friday_on_cmd(
     cmd: list,
@@ -68,7 +66,7 @@ def friday_on_cmd(
 ):
     """- Main Decorator To Register Commands. -"""
     filterm = (
-        owner_and_sudo
+        (filters.me | _sudo)
         & filters.command(cmd, Config.COMMAND_HANDLER)
         & ~filters.via_bot
         & ~filters.forwarded
