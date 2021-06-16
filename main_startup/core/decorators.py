@@ -39,7 +39,17 @@ from bot_utils_files.Localization.engine import Engine
 from main_startup.core.helpers import edit_or_reply
 from database.sudodb import sudo_list
 
+
 sudo_list_ = Friday.loop.create_task(sudo_list())
+
+async def owner_and_sudo(f, client, message):
+    if message.from_user.is_self:
+        return bool(True)
+    elif message.from_user.id in sudo_list_:
+        return bool(True)
+    return bool(False)
+
+owner_and_sudo = filters.create(func=owner_and_sudo, name="owner_and_sudo")
 
 def friday_on_cmd(
     cmd: list,
@@ -55,9 +65,8 @@ def friday_on_cmd(
     cmd_help: dict = {"help": "No One One Gonna Help You", "example": "{ch}what"},
 ):
     """- Main Decorator To Register Commands. -"""
-    
     filterm = (
-        (filters.me | filters.user(sudo_list_))
+        owner_and_sudo
         & filters.command(cmd, Config.COMMAND_HANDLER)
         & ~filters.via_bot
         & ~filters.forwarded
