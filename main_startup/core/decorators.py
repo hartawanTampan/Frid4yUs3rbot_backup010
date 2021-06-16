@@ -40,6 +40,11 @@ from main_startup.core.helpers import edit_or_reply
 from database.sudodb import sudo_list
 from database.sdcdb import disabled_cmd_list
 
+async def get_rdata():
+    dlist = await disabled_cmd_list()
+    sudolist = await sudo_list()
+    return dlist, sudolist
+
 def friday_on_cmd(
     cmd: list,
     group: int = 0,
@@ -54,7 +59,8 @@ def friday_on_cmd(
     cmd_help: dict = {"help": "No One One Gonna Help You", "example": "{ch}what"},
 ):
     """- Main Decorator To Register Commands. -"""
-    sudo_list_ = Friday.loop.create_task(sudo_list())
+    
+    sudo_list_, dlist = Friday.loop.create_task(get_rdata())
     filterm = (
         (filters.me | filters.user(sudo_list_))
         & filters.command(cmd, Config.COMMAND_HANDLER)
@@ -129,7 +135,7 @@ def friday_on_cmd(
                         await client.send_message(Config.LOG_GRP, text)
                     except BaseException:
                         logging.error(text)
-        add_handler(filterm, wrapper, cmd)
+        add_handler(filterm, wrapper, cmd, dlist)
         return wrapper
     return decorator
 
@@ -209,8 +215,7 @@ def add_help_menu(
             ] += f"\n\n**Command :** `{Config.COMMAND_HANDLER}{cmd}` \n**Help :** `{cmd_help}` \n**Example :** `{cmd_helpz}`"
             
 
-def add_handler(filter_s, func_, cmd):
-    s_d_c = Friday.loop.create_task(disabled_cmd_list())
+def add_handler(filter_s, func_, cmd, s_d_c):
     if any(item in s_d_c for item in cmd): 
         filter_s = (filters.me & filters.command(cmd, Config.COMMAND_HANDLER) & ~filters.via_bot & ~filters.forwarded)
     Friday.add_handler(MessageHandler(func_, filters=filter_s), group=0)
