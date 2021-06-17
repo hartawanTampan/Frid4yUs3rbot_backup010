@@ -43,9 +43,13 @@ from database.sudodb import sudo_list
 sudo_list_ = Friday.loop.create_task(sudo_list())
 
 async def _sudo(f, client, message):
-    if not (message or message.from_user):
+    if not message:
         return bool(False)
-    elif message.from_user.id in sudo_list_.result():
+    if not message.from_user:
+        return bool(False)
+    if not message.from_user.id:
+        return bool(False)
+    if message.from_user.id in sudo_list_.result():
         return bool(True)
     return bool(False)
 
