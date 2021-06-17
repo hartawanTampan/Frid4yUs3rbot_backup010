@@ -24,7 +24,7 @@ async def installer(client, message):
     engine = message.Engine
     pablo = await edit_or_reply(message, engine.get_string("PROCESSING"))
     if not message.reply_to_message:
-        await pablo.edit(engine.get_string("NEEDS_REPLY").format("A Plugin File To Install Plugin"))
+        await pablo.edit(engine.get_string("NEEDS_REPLY").format("A Plugin"))
         return
     if not message.reply_to_message.document:
         await pablo.edit(engine.get_string("IS_NOT_DOC"))
@@ -43,7 +43,7 @@ async def installer(client, message):
     try:
         load_plugin(file_n)
     except Exception as e:
-        await pablo.edit(engine.get_string("ERROR_INSTALLING").format("e"))
+        await pablo.edit(engine.get_string("ERROR_INSTALLING").format(e))
         os.remove(Escobar)
         return
-    await pablo.edit(engine.get_string("PLUGIN_INSTALLED").format("file_name"))
+    await pablo.edit(engine.get_string("PLUGIN_INSTALLED").format(file_name))
