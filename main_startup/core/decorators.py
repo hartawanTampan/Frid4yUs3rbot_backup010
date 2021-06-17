@@ -40,12 +40,12 @@ from main_startup.core.helpers import edit_or_reply
 from database.sudodb import sudo_list
 
 
-sudo_list_ = (Friday.loop.create_task(sudo_list())).result()
+sudo_list_ = Friday.loop.create_task(sudo_list())
 
 async def _sudo(f, client, message):
     if not (message or message.from_user):
         return bool(False)
-    elif message.from_user.id in sudo_list_:
+    elif message.from_user.id in sudo_list_.result():
         return bool(True)
     return bool(False)
 
