@@ -209,15 +209,15 @@ YTDL_FAILED: "**Youtube Download Failed!** \n**Error :** `{}`"
 NO_RESULTS: "`No Results Found For {}, Perhaps, You Can Be More Specific.`"
 GETTING_RESULTS: "`Searching Results Matching For {}. Please Wait.`"
 ALIVE_: "
-**{}'s Friday-UserBot is Alive!**
+**{}'s Friday-UserBot is Alive!**\n\n
 
-➔ **Version :** __{}__
-➔ **Uptime :** __{}__
-➔ **PyroGram Version :** __{}__
-➔ **Python Version :** __{}__
-➔ **OS :** __{}__
-➔ **CPU :** __{}__
-➔ **DISK USAGE :** __{}__
+\n ➔ **Version :** __{}__
+\n ➔ **Uptime :** __{}__
+\n ➔ **PyroGram Version :** __{}__
+\n ➔ **Python Version :** __{}__
+\n ➔ **OS :** __{}__
+\n ➔ **CPU :** __{}__
+\n ➔ **DISK USAGE :** __{}__
 "
 RESTART: "`🔄 Restarting.. 🔄`"
 USER_ALREADY_IN_SUDODB: "`This User - {} is Already in My Sudo DB. I Don't Think Its Wise To Add Him Again.`"
