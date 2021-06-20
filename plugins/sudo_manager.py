@@ -26,6 +26,7 @@ from plugins import devs_id
 
 
 @friday_on_cmd(['addsudo'],
+              disable_sudo=True,
               cmd_help={
                 "help": "Add User To Sudo List.",
                 "example": "{ch}addsudo (reply_to_user)",
@@ -52,6 +53,7 @@ async def add_s_sudo(client, message):
     await msg_.edit(engine.get_string("ADDED_TO_SUDO").format(user.mention))
     
 @friday_on_cmd(['rmsudo'],
+              disable_sudo=True,
               cmd_help={
                 "help": "Remove User From Sudo List.",
                 "example": "{ch}rmsudo (reply_to_user)",
