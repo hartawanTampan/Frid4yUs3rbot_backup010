@@ -46,7 +46,7 @@ async def mongo_check():
 async def load_unofficial_modules():
     """Load Extra Plugins."""
     logging.info("Loading X-Tra Plugins!")
-    await run_cmd('bash bot_utils_files/other_helpers/xtra_plugins.sh "https://github.com/DevsExpo/Xtra-Plugins" "unstable"')
+    await run_cmd(f'bash bot_utils_files/other_helpers/xtra_plugins.sh {Config.XTRA_PLUGINS_REPO} "unstable"')
     xtra_mods = plugin_collecter("./xtraplugins/")
     for mods in xtra_mods:
         try:
