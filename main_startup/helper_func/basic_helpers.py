@@ -24,6 +24,7 @@ from pyrogram.types import (
     Message,
 )
 from main_startup import Friday, Friday2, Friday3, Friday4
+from database.sudodb import sudo_list
 from main_startup.config_var import Config
 import multiprocessing
 import mimetypes
@@ -73,12 +74,13 @@ def get_user(message: Message, text: str) -> [int, str, None]:
 
 
 async def edit_or_reply(message, text, parse_mode="md"):
+    sudo_lis_t = await sudo_list()
     """Edit Message If Its From Self, Else Reply To Message, (Only Works For Sudo's)"""
     if not message:
         return await message.edit(text, parse_mode=parse_mode)
     if not message.from_user:
         return await message.edit(text, parse_mode=parse_mode)
-    if message.from_user.id in Config.AFS:
+    if message.from_user.id in sudo_lis_t:
         if message.reply_to_message:
             kk = message.reply_to_message.message_id
             return await message.reply_text(
