@@ -37,6 +37,9 @@ async def paste(client, message):
         elif message.reply_to_message.text:
             message_s = message.reply_to_message.text
     url = "https://del.dog/documents"
+    if not message_s:
+        await pablo.edit(engine.get_string("NEEDS_REPLY").format("File / Text"))
+        return
     async with aiohttp.ClientSession() as session:
         req = await session.post(url, data=message_s.encode("UTF-8"))
         resp = await req.json()
