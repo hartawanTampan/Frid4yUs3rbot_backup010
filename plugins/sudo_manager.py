@@ -73,20 +73,3 @@ async def rm_s_sudo(client, message):
       return await msg_.edit(engine.get_string("USER_ALREADY_NOT_IN_SUDODB").format(user.mention))
     await rm_sudo(int(user.id))
     await msg_.edit(engine.get_string("RM_FROM_SUDO").format(user.mention))
-    
-@friday_on_cmd(['listsudo'],
-              cmd_help={
-                "help": "Get Sudo List.",
-                "example": "{ch}listsudo",
-    })
-async def lust_sudo(client, message):
-    engine = message.Engine
-    msg_ = await edit_or_reply(message, engine.get_string("PROCESSING"))
-    all_sudos = await sudo_list()
-    if not all_sudos:
-      return await msg_.edit(engine.get_string("NO_SUDO_IN_DB"))
-    s_ = engine.get_string("LIST_OF_SUDO")
-    for i in all_sudos:
-      user = await client.get_users(i)
-      s_ += f"✨ {user.mention} \n"
-    await msg_.edit(s_)
