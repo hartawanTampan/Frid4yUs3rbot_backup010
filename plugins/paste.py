@@ -38,14 +38,12 @@ async def paste(client, message):
             os.remove(file)
         elif message.reply_to_message.text:
             message_s = message.reply_to_message.text
-    print(message_s)
-    key = (
-        requests.post("https://nekobin.com/api/documents", json={"content": message_s})
-        .json()
-        .get("result")
-        .get("key")
-    )
-    url = f"https://nekobin.com/{key}"
-    raw = f"https://nekobin.com/raw/{key}"
+    url = "https://del.dog/documents"
+    async with aiohttp.ClientSession() as session:
+        req = await session.post(url, data=message_s.encode("UTF-8"))
+        resp = await req.json()
+    key = resp.get("key")
+    url = f"https://del.dog/{key}"
+    raw = f"https://del.dog/raw/{key}"
     reply_text = engine.get_string("PASTED").format(url, raw)
     await pablo.edit(reply_text)
