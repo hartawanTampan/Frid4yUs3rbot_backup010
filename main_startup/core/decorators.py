@@ -64,17 +64,25 @@ def friday_on_cmd(
     only_if_admin: bool = False,
     ignore_errors: bool = False,
     propagate_to_next_handler: bool = True,
+    disable_sudo: bool = False,
     file_name: str = None,
     is_official: bool = True,
     cmd_help: dict = {"help": "No One One Gonna Help You", "example": "{ch}what"},
 ):
     """- Main Decorator To Register Commands. -"""
-    filterm = (
-        (filters.me | _sudo)
+    if disable_sudo:
+        filterm = (
+        filters.me
         & filters.command(cmd, Config.COMMAND_HANDLER)
         & ~filters.via_bot
         & ~filters.forwarded
     )
+    else:
+        filterm = (
+            (filters.me | _sudo)
+            & filters.command(cmd, Config.COMMAND_HANDLER)
+            & ~filters.via_bot
+            & ~filters.forwarded)
     cmd = list(cmd)
     Engine = LangEngine
     add_help_menu(
