@@ -85,7 +85,25 @@ if Config.STRINGSESSION_4:
     )
 else:
     Friday4 = None
-
+if Config.STRINGSESSION_5:
+    Friday5 = Client(
+        Config.STRINGSESSION_5,
+        api_id=Config.API_ID,
+        api_hash=Config.API_HASH,
+        sleep_threshold=180,
+    )    
+else:
+    Friday5 = None
+if Config.STRINGSESSION_6:
+    Friday6 = Client(
+        Config.STRINGSESSION_6,
+        api_id=Config.API_ID,
+        api_hash=Config.API_HASH,
+        sleep_threshold=180,
+    )  
+else:
+    Friday6 = None
+    
 if Config.BOT_TOKEN:
     bot = Client(
         "MyAssistant",
