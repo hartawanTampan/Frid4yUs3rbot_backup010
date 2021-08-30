@@ -19,6 +19,8 @@ from main_startup import (
     Friday2,
     Friday3,
     Friday4,
+    Friday5,
+    Friday6,    
     bot,
     friday_version,
     mongo_client,
@@ -107,6 +109,14 @@ async def run_bot():
         await Friday4.start()
         Friday4.me = await Friday4.get_me()
         Friday4.has_a_bot = bool(bot)
+    if Friday5:
+        await Friday5.start()
+        Friday5.me = await Friday5.get_me()
+        Friday5.has_a_bot = bool(bot)
+    if Friday6:
+        await Friday5.start()
+        Friday6.me = await Friday6.get_me()
+        Friday6.has_a_bot = bool(bot)
     if Config.PLUGIN_CHANNEL:
         await fetch_plugins_from_channel()
     needed_mods = plugin_collecter("./plugins/")
