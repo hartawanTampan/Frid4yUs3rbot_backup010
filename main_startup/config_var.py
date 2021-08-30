@@ -48,6 +48,8 @@ class Config((object)):
     STRINGSESSION_2 = os.environ.get("STRINGSESSION_2", None)
     STRINGSESSION_3 = os.environ.get("STRINGSESSION_3", None)
     STRINGSESSION_4 = os.environ.get("STRINGSESSION_4", None)
+    STRINGSESSION_5 = os.environ.get("STRINGSESSION_5", None)
+    STRINGSESSION_6 = os.environ.get("STRINGSESSION_6", None)
     LOAD_UNOFFICIAL_PLUGINS = bool(strtobool(str(os.environ.get("LOAD_UNOFFICIAL_PLUGINS", False))))
     PLUGIN_CHANNEL = os.environ.get("PLUGIN_CHANNEL", False)
     TZ = os.environ.get("TZ", "Asia/Kolkata")
