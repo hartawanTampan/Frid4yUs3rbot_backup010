@@ -30,6 +30,8 @@ from main_startup import (
     Friday2,
     Friday3,
     Friday4,
+    Friday5,
+    Friday6,
     bot
 )
 from main_startup.config_var import Config
@@ -195,6 +197,10 @@ def listen(filter_s):
             Friday3.add_handler(MessageHandler(wrapper, filters=filter_s), group=0)
         if Friday4:
             Friday4.add_handler(MessageHandler(wrapper, filters=filter_s), group=0)
+        if Friday5:
+            Friday5.add_handler(MessageHandler(wrapper, filters=filter_s), group=0)
+        if Friday6:
+            Friday6.add_handler(MessageHandler(wrapper, filters=filter_s), group=0)
         return wrapper
 
     return decorator
@@ -245,4 +251,8 @@ def add_handler(filter_s, func_, cmd):
     if Friday3:
         Friday3.add_handler(MessageHandler(func_, filters=filter_s), group=0)
     if Friday4:
-        Friday4.add_handler(MessageHandler(func_, filters=filter_s), group=0)      
+        Friday4.add_handler(MessageHandler(func_, filters=filter_s), group=0)
+    if Friday5:
+        Friday5.add_handler(MessageHandler(func_, filters=filter_s), group=0)
+    if Friday6:
+        Friday6.add_handler(MessageHandler(func_, filters=filter_s), group=0)
