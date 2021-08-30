@@ -50,7 +50,7 @@ if not Config.LOG_GRP:
     quit(1)
 
 
-# Clients - Upto 4 Clients is Supported!
+# Clients - Upto 6 Clients is Supported!
 if Config.STRINGSESSION:
     Friday = Client(
         Config.STRINGSESSION,
