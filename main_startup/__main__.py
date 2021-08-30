@@ -114,7 +114,7 @@ async def run_bot():
         Friday5.me = await Friday5.get_me()
         Friday5.has_a_bot = bool(bot)
     if Friday6:
-        await Friday5.start()
+        await Friday6.start()
         Friday6.me = await Friday6.get_me()
         Friday6.has_a_bot = bool(bot)
     if Config.PLUGIN_CHANNEL:
